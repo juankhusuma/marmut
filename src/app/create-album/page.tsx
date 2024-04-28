@@ -13,7 +13,7 @@ export default function CreateAlbum() {
                             id="title"
                             name="title"
                             placeholder="Enter your album title here"
-                            className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                            className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="label" className="block text-sm font-medium text-gray-700">Label:</label>
