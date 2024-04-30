@@ -1,252 +1,34 @@
-export default function Royalti(){
-    return (
-<div className="flex justify-center items-center h-screen bg-gray-625" style={{ paddingTop: 'var(--header-height, 5rem)' }}>
-  <div className="overflow-hidden shadow-md sm:rounded-lg w-3/4 lg:w-1/2 mb-10">
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-deep-blue">
-        <tr>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white opacity-80 uppercase tracking-wider">
-            Judul Lagu
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white opacity-80 uppercase tracking-wider">
-            Judul Album
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white opacity-80 uppercase tracking-wider">
-            Total Play
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white opacity-80 uppercase tracking-wider">
-            Total Download
-          </th>
-          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white opacity-80 uppercase tracking-wider">
-            Total Royalti Didapat
-          </th>
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap  text-deep-blue opacity-75">
-            Lagu1
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap  text-deep-blue opacity-75">
-            Album1
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap  text-deep-blue opacity-75">
-            3
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap  text-deep-blue opacity-75">
-            0
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap  text-deep-blue opacity-75">
-            Rp 450000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap  text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-        <tr>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Lagu2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Album2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            2
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-deep-blue opacity-75">
-            Rp 520000
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-    )
+export default function RoyaltyPage() {
+  const f = Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  });
+  return (
+    <div className="p-10 flex justify-center">
+      <div className="">
+        <table className="table">
+          <thead>
+            <tr>
+              <td>Judul Lagu</td>
+              <td>Judul Album</td>
+              <td>Total Play</td>
+              <td>Total Download</td>
+              <td>Total Royalti Didapat</td>
+            </tr>
+          </thead>
+          <tbody>
+            {new Array(50).fill(null).map((_, index) => (
+              <tr key={index} className="hover">
+                <td>Lagu {index + 1}</td>
+                <td>Album {index + 1}</td>
+                <td className="text-center">{Math.floor(Math.random() * 100)}</td>
+                <td className="text-center">{Math.floor(Math.random() * 50)}</td>
+                <td>{f.format(Math.floor(Math.random() * 1000000) + 100000)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
 }

@@ -2,8 +2,8 @@
 
 import { handleUserPL } from "@/action/handleUserPlaylist";
 
-export default function kelolapl() {
-    if (false) {
+export default function KelolaPlaylistPage() {
+    if (true) {
         return (
             <div className="flex-col p-10 space-y-10">
                 <h1 className="text-3xl font-bold text-center">User Playlist</h1>
