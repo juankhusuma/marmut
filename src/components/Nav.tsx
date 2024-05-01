@@ -1,17 +1,22 @@
 "use client";
 
+import { AuthContext } from "@/context/AuthProvider";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 
 export default function Nav() {
     const [authenticated, setAuthenticated] = useState(false);
+    const { auth, logout } = useContext(AuthContext);
 
     useEffect(() => {
-        if (localStorage.getItem("email")) {
+        if (auth?.email) {
+            console.log(auth)
             setAuthenticated(true);
+        } else {
+            setAuthenticated(false);
         }
-    }, [])
+    }, [auth])
 
     return (
         <div className="navbar bg-base-100">
@@ -55,6 +60,7 @@ export default function Nav() {
                         <button onClick={() => {
                             localStorage.removeItem("email");
                             setAuthenticated(false);
+                            logout()
                         }} className="btn">Logout</button> :
                         <Link href="/auth/" className="btn">Login</Link>
                 }
