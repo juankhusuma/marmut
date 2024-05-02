@@ -17,7 +17,7 @@ export default function CreateSong() {
                     <div className="mb-4">
                         <label htmlFor="artist" className="block text-sm font-medium text-gray-700">Artist:</label>
                         <select id="artist" name="artist" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option>Choose an artist</option>
+                            <option value="" disabled selected>Choose an artist</option>
                             <option value="artist1">Artist 1</option>
                             <option value="artist2">Artist 2</option>
                         </select>
@@ -25,7 +25,7 @@ export default function CreateSong() {
                     <div className="mb-4">
                         <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Songwriter :</label>
                         <select id="genre" name="genre" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option>Choose songwriter</option>
+                            <option value="" disabled selected>Choose songwriter</option>
                             <option value="artist1">Songwriter 1</option>
                             <option value="artist2">Songwriter 2</option>
                         </select>
@@ -33,7 +33,7 @@ export default function CreateSong() {
                     <div className="mb-4">
                         <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre:</label>
                         <select id="genre" name="genre" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option>Choose genre</option>
+                            <option value="" disabled selected>Choose genre</option>
                             <option value="artist1">Genre 1</option>
                             <option value="artist2">Genre 2</option>
                         </select>

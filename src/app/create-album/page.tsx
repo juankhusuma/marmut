@@ -21,7 +21,7 @@ export default function CreateAlbum() {
                             id="label"
                             name="label"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option>Choose a label</option>
+                            <option value="" disabled selected>Choose a label</option>
                             <option value="label1">Label 1</option>
                             <option value="label2">Label 2</option>
                             <option value="label3">Label 3</option>

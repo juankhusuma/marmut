@@ -32,28 +32,36 @@ export default function PaketLangganan() {
                             <td className="px-6 py-4 whitespace-nowrap">1 Bulan</td>
                             <td className="px-6 py-4 whitespace-nowrap">Rp54.900</td>
                             <td className="px-6 py-4 whitespace-nowrap">
+                                <Link href = "/paket-langganan/pembayaran-paket">
                                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                                </Link>     
                             </td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 whitespace-nowrap">3 Bulan</td>
                             <td className="px-6 py-4 whitespace-nowrap">...</td>
                             <td className="px-6 py-4 whitespace-nowrap">
+                                <Link href = "/paket-langganan/pembayaran-paket">
                                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                                </Link>  
                             </td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 whitespace-nowrap">6 Bulan</td>
                             <td className="px-6 py-4 whitespace-nowrap">...</td>
                             <td className="px-6 py-4 whitespace-nowrap">
+                                <Link href = "/paket-langganan/pembayaran-paket">
                                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                                </Link>  
                             </td>
                         </tr>
                         <tr>
                             <td className="px-6 py-4 whitespace-nowrap">1 Tahun</td>
                             <td className="px-6 py-4 whitespace-nowrap">...</td>
                             <td className="px-6 py-4 whitespace-nowrap">
+                                <Link href = "/paket-langganan/pembayaran-paket">
                                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                                </Link>  
                             </td>
                         </tr>
                     </tbody>
