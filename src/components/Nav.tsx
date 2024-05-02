@@ -24,7 +24,7 @@ export default function Nav() {
 }
 
 function AuthorizedNav() {
-    const isLabel = true;
+    const isLabel = false;
     const isPremium = false && !isLabel;
     const isPodcaster = false && !isLabel;
     const isArtist = false && !isLabel;
