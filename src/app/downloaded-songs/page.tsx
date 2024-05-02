@@ -75,7 +75,7 @@ export default function DownloadedSongs() {
                                   <td className="px-6 py-4 whitespace-nowrap">
                                     27/02/2024
                                   </td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                  <td className="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
                                   <Link href="/album-song/user/albumdetails">
                                     <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
                                       Lihat
