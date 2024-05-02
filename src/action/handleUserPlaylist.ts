@@ -2,7 +2,11 @@
 
 import { sql } from "@vercel/postgres";
 
-export async function handleUserPL() {
-    const data = {'Judul':'myFsong', 'Jumlah Lagu':10, 'Total Durasi': '10 Minutes', 'Action':'-'}
+export async function handleUserPL(email: string | null) {
+    const data = await sql`
+    SELECT judul, jumlah_lagu, total_durasi 
+    FROM USER_PLAYLIST
+    WHERE email_pembuat = ${email}
+    `;
     return data;
 }
