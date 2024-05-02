@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Nav from "@/components/Nav";
+import AuthProvier from "@/context/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Nav />
-        {children}
+        <AuthProvier>
+          {children}
+        </AuthProvier>
         <Toaster />
       </body>
     </html>

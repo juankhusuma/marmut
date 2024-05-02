@@ -1,10 +1,13 @@
 "use client";
 
 import { handleUserLogin } from "@/action/handleUserLogin";
+import { AuthContext } from "@/context/AuthProvider";
 import { triggerToast } from "@/utils/toast";
-import { FormEvent } from "react";
+import { FormEvent, useContext } from "react";
 
 export default function Login() {
+    const { login } = useContext(AuthContext);
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
@@ -14,6 +17,7 @@ export default function Login() {
             if (authenticated) {
                 triggerToast("success", "You're logged in!");
                 localStorage.setItem("email", formData.get("email") as string);
+                login(formData.get("email") as string, "admin");
             } else {
                 triggerToast("error", "Email or password is wrong!");
             }
