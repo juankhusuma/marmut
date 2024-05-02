@@ -9,62 +9,50 @@ export default function Nav() {
     const [authenticated, setAuthenticated] = useState(false);
     const { auth, logout } = useContext(AuthContext);
 
-    useEffect(() => {
-        if (auth?.email) {
-            console.log(auth)
-            setAuthenticated(true);
-        } else {
-            setAuthenticated(false);
-        }
-    }, [auth])
+    const loggedIn = true;
 
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
-                <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-                    </div>
-                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><a>Item 1</a></li>
-                        <li>
-                            <a>Parent</a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Item 3</a></li>
-                    </ul>
-                </div>
                 <Link href="/" className="btn btn-ghost text-xl">Marmut</Link>
             </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
-                    <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li><a>Item 3</a></li>
-                </ul>
-            </div>
-            <div className="navbar-end">
-                {
-                    authenticated ?
-                        <button onClick={() => {
-                            localStorage.removeItem("email");
-                            setAuthenticated(false);
-                            logout()
-                        }} className="btn">Logout</button> :
-                        <Link href="/auth/" className="btn">Login</Link>
-                }
-            </div>
+            {
+                loggedIn ? <AuthorizedNav /> : <UnauthorizedNav />
+            }
+        </div>
+    )
+}
+
+function AuthorizedNav() {
+    const isLabel = false;
+    const isPremium = false;
+    const isPodcaster = false;
+    const isArtist = false;
+    return (
+        <div className="navbar-end gap-2">
+            <Link href="/dashboard" className="btn btn-sm text-xs">Dashboard</Link>
+            {!isLabel && <Link href="/playlist/chart" className="btn btn-sm text-xs">Chart</Link>}
+            {!isLabel && (<form className="flex">
+                <input type="text" className="input input-sm input-bordered" name="" id="" />
+                <input type="submit" value="Search" className="btn btn-sm text-xs" />
+            </form>)}
+            {!isLabel && <Link href="/playlist/kelolapl" className="btn btn-sm text-xs">Kelola Playlist</Link>}
+            {!isLabel && <Link href="/playlist/kelolapl" className="btn btn-sm text-xs">Langganan Paket</Link>}
+            {isPremium && <Link href="/downloaded-songs" className="btn btn-sm text-xs">Kelola Downloads & Songs</Link>}
+            {isPodcaster && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Podcast</Link>}
+            {isArtist && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album & Songs</Link>}
+            {isLabel && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album</Link>}
+            {(isLabel || isArtist) && <Link href="/playlist/list" className="btn btn-sm text-xs">Cek Royalti</Link>}
+            <button className="btn btn-sm text-xs">Logout</button>
+        </div>
+    )
+}
+
+function UnauthorizedNav() {
+    return (
+        <div className="navbar-end gap-5">
+            <Link href="/auth/login" className="btn">Login</Link>
+            <Link href="/auth/register" className="btn">Registrasi</Link>
         </div>
     )
 }
