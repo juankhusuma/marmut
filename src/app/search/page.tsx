@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 export default function SearchBar() {
+    const isFound = true; 
   return (
 <div className="flex flex-col items-center min-h-screen bg-gray-900">
       <div className="bg-white p-8 rounded-lg shadow-lg text-gray-900 w-full max-w-md">
@@ -19,7 +20,7 @@ export default function SearchBar() {
           CARI
         </button>
       </div>
-      <div className="bg-white p-8 mt-6 rounded-lg shadow-lg text-gray-900 w-full max-w-4xl">
+    {isFound&&(<div className="bg-white p-8 mt-6 rounded-lg shadow-lg text-gray-900 w-full max-w-4xl">
         <h2 className="text-lg mb-4 font-semibold">Hasil Pencarian "love"</h2>
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -65,10 +66,10 @@ export default function SearchBar() {
             </tr>
           </tbody>
         </table>
-      </div>
-      <div className="bg-white p-6 rounded-lg shadow-lg text-gray-900 mx-4 mt-6 mb-20">
+      </div>)}
+{!isFound&&(      <div className="bg-white p-6 rounded-lg shadow-lg text-gray-900 mx-4 mt-6 mb-20">
         <h2 className="text-lg font-semibold text-center">Maaf, pencarian untuk "love" tidak ditemukan</h2>
-      </div>
+      </div>)}
     </div>
   );
 }
