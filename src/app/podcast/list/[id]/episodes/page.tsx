@@ -22,7 +22,7 @@ export default function ViewPodcastEpisodePage() {
                             <td>59 menit</td>
                             <td>18/03/2024</td>
                             <td>
-                                <Link href="#">[Lihat]</Link>
+                                <Link href="#">[Hapus]</Link>
                             </td>
                         </tr>
                         <tr className="text-center">
