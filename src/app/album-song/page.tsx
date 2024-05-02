@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import Link from 'next/link';
-
-=======
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
-export default function AlbumListUser() {
+export default function AlbumListLabel() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
         <div className="w-auto">
@@ -41,23 +36,9 @@ export default function AlbumListUser() {
                         0 menit
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-<<<<<<< HEAD
-                      <Link href="/album-song/user/albumdetails">
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <Link href="/album-song/user/addsong">
-                        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                          Tambah Lagu
-                        </button>
-                      </Link>
-                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
-=======
                         <a href="#" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">Lihat Daftar Lagu</a>
                         <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded
 ">Hapus</a>
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
                       </td>
                     </tr>
                     <tr>
@@ -71,23 +52,9 @@ export default function AlbumListUser() {
                         0 menit
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-<<<<<<< HEAD
-                      <Link href="/album-song/user/albumdetails">
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <Link href="/album-song/user/addsong">
-                        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                          Tambah Lagu
-                        </button>
-                      </Link>
-                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
-=======
                       <a href="#" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">Lihat Daftar Lagu</a>
                         <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded
 ">Hapus</a>
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
                       </td>
                     </tr>
                     <tr>
@@ -101,23 +68,9 @@ export default function AlbumListUser() {
                         0 menit
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-<<<<<<< HEAD
-                      <Link href="/album-song/user/albumdetails">
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <Link href="/album-song/user/addsong">
-                        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                          Tambah Lagu
-                        </button>
-                      </Link>
-                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
-=======
                       <a href="#" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">Lihat Daftar Lagu</a>
                         <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded
 ">Hapus</a>
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
                       </td>
                     </tr>
                     <tr>
@@ -131,23 +84,9 @@ export default function AlbumListUser() {
                         0 menit
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-<<<<<<< HEAD
-                      <Link href="/album-song/user/albumdetails">
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <Link href="/album-song/user/addsong">
-                        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                          Tambah Lagu
-                        </button>
-                      </Link>
-                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
-=======
                       <a href="#" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">Lihat Daftar Lagu</a>
                         <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded
 ">Hapus</a>
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
                       </td>
                     </tr>
                     <tr>
@@ -161,23 +100,9 @@ export default function AlbumListUser() {
                         0 menit
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-<<<<<<< HEAD
-                      <Link href="/album-song/user/albumdetails">
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <Link href="/album-song/user/addsong">
-                        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                          Tambah Lagu
-                        </button>
-                      </Link>
-                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
-=======
                       <a href="#" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">Lihat Daftar Lagu</a>
                         <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded
 ">Hapus</a>
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
                       </td>
                     </tr>
                     <tr>
@@ -191,23 +116,9 @@ export default function AlbumListUser() {
                         0 menit
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-<<<<<<< HEAD
-                      <Link href="/album-song/user/albumdetails">
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <Link href="/album-song/user/addsong">
-                        <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                          Tambah Lagu
-                        </button>
-                      </Link>
-                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
-=======
                       <a href="#" className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">Lihat Daftar Lagu</a>
                         <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded
 ">Hapus</a>
->>>>>>> d35e142 (Applying table for album-song label + user(not finish yet))
                       </td>
                     </tr>
                 </tbody>
