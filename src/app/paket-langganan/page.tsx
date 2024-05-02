@@ -1,84 +1,63 @@
 import Link from 'next/link';
+import React from 'react';
 
 export default function PaketLangganan() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
-            <div className="w-auto">
-                <div className="bg-white shadow overflow-hidden rounded-lg">
-                    <div className="px-4 py-5 sm:px-6">
-                        <h3 className="text-lg leading-6 font-medium text-gray-900 text-center">RIWAYAT TRANSAKSI PAKET</h3>
-                    </div>
-                    <div className="border-t border-gray-200">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-deep-blue">
-                                <tr>
-                                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                                        Jenis
-                                    </th>
-                                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                                        Tanggal Dimulai
-                                    </th>
-                                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                                        Tanggal Berakhir
-                                    </th>
-                                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                                        Metode Pembayaran
-                                    </th>
-                                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                                        Nominal
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200 text-center">
-                              <tr>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    1 Bulan
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    8 April 2024,
-                                    23:00
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    8 Mei 2024,
-                                    23:00
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    E-Wallet
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    Rp54.900
-                                  </td>
-                              </tr>
-                              <tr>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    1 Bulan
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    8 April 2024,
-                                    23:00
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    8 Mei 2024,
-                                    23:00
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    E-Wallet
-                                  </td>
-                                  <td className="px-6 py-4 whitespace-nowrap">
-                                    Rp54.900
-                                  </td>
-                              </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="flex justify-center py-5">
-                        <Link href="/">
-                            <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-                                Kembali
-                            </button>
-                        </Link>
-                    </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg text-gray-900 max-w-4xl w-full">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold">LANGGANAN PAKET</h3>
+                    <Link href = "/paket-langganan/riwayat-transaksi">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Riwayat Transaksi
+                    </button>
+                    </Link>
                 </div>
+                <table className="min-w-full">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Jenis
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Harga
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white">
+                        <tr>
+                            <td className="px-6 py-4 whitespace-nowrap">1 Bulan</td>
+                            <td className="px-6 py-4 whitespace-nowrap">Rp54.900</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="px-6 py-4 whitespace-nowrap">3 Bulan</td>
+                            <td className="px-6 py-4 whitespace-nowrap">...</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="px-6 py-4 whitespace-nowrap">6 Bulan</td>
+                            <td className="px-6 py-4 whitespace-nowrap">...</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="px-6 py-4 whitespace-nowrap">1 Tahun</td>
+                            <td className="px-6 py-4 whitespace-nowrap">...</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Berlangganan</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     );
