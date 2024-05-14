@@ -14,7 +14,7 @@ export default async function UserCreateAlbumPage() {
     const label = result2.rows;
 
     const result3 = await sql`SELECT s.id, s.email_akun, ak.nama FROM songwriter AS s JOIN akun ak ON s.email_akun = ak.email`;
-    const songwriter = result2.rows;
+    const songwriter = result3.rows;
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
