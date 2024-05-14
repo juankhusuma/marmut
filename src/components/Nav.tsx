@@ -25,9 +25,9 @@ export default function Nav() {
 
 function AuthorizedNav() {
     const isLabel = false;
-    const isPremium = false;
-    const isPodcaster = false;
-    const isArtist = false;
+    const isPremium = false && !isLabel;
+    const isPodcaster = false && !isLabel;
+    const isArtist = false && !isLabel;
     return (
         <div className="navbar-end gap-2">
             <Link href="/dashboard" className="btn btn-sm text-xs">Dashboard</Link>

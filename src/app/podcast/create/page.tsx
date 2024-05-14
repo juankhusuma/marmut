@@ -22,6 +22,7 @@ export default function CreatePodcastPage() {
                     <label htmlFor="durasi" className="label-text">Durasi:</label>
                     <input className="ml-2 input-sm input input-primary" type="text" name="durasi" id="" />
                 </div>
+                <input type="submit" value="Submit" className="btn btn-primary" />
             </form>
         </div>
     )
