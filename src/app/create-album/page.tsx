@@ -5,8 +5,17 @@ import { sql } from "@vercel/postgres";
 import { FormEvent } from "react";
 
 export default async function UserCreateAlbumPage() {
-    const result = await sql`SELECT email_akun, nama from artist as a join akun ak on a.email_akun = ak.email`
-    const artist = result.rows
+    // const result = await sql`SELECT email_akun, nama from artist as a join akun ak on a.email_akun = ak.email`
+    // const artist = result.rows
+    const result = await sql`SELECT a.id, a.email_akun, ak.nama FROM artist AS a JOIN akun ak ON a.email_akun = ak.email`;
+    const artist = result.rows;
+
+    const result2 = await sql`SELECT id, nama from Label`;
+    const label = result2.rows;
+
+    const result3 = await sql`SELECT s.id, s.email_akun, ak.nama FROM songwriter AS s JOIN akun ak ON s.email_akun = ak.email`;
+    const songwriter = result2.rows;
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="bg-white p-8 rounded-lg shadow-lg text-gray-900 max-w-md w-full">
@@ -28,9 +37,9 @@ export default async function UserCreateAlbumPage() {
                             name="label"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="" disabled selected>Choose a label</option>
-                            <option value="label1">Label 1</option>
-                            <option value="label2">Label 2</option>
-                            <option value="label3">Label 3</option>
+                            {label.map((item) => (
+                                <option key = {item.id} value={item.id}>{item.nama}</option>
+                            ))}
                         </select>
                     </div>
                     <h3 className="text-lg font-semibold text-center mb-4">LAGU PERTAMA</h3>
@@ -51,7 +60,19 @@ export default async function UserCreateAlbumPage() {
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="" disabled selected>Choose a artist</option>
                             {artist.map((item) => (
-                                <option value={item.email_akun}>{item.nama}</option>
+                                <option key = {item.id} value={item.id}>{item.nama}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="songwriter" className="block text-sm font-medium text-gray-700">Songwriter:</label>
+                        <select
+                            id="songwriter"
+                            name="songwriter"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="" disabled selected>Choose a songwriter</option>
+                            {songwriter.map((item) => (
+                                <option key = {item.id} value={item.id}>{item.nama}</option>
                             ))}
                         </select>
                     </div>
@@ -62,9 +83,7 @@ export default async function UserCreateAlbumPage() {
                             name="genre"
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="" disabled selected>Choose genre</option>
-                            <option value="genre1">Romance</option>
-                            <option value="genre2">Jazz</option>
-                            <option value="genre3">Pop</option>
+                            <option value="genre">red Soul</option>
                         </select>
                     </div>
                     <div className="mb-4">
