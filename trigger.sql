@@ -10,6 +10,7 @@ AFTER INSERT ON AKUN
 FOR EACH ROW
 EXECUTE FUNCTION set_non_premium_account();
 
+-- cek email
 CREATE OR REPLACE FUNCTION check_email() RETURNS TRIGGER AS $$
 BEGIN
     IF NEW.email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' THEN
@@ -18,6 +19,7 @@ BEGIN
         RAISE EXCEPTION 'Email tidak valid';
     END IF;
 END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER check_email
 BEFORE INSERT OR UPDATE ON AKUN
