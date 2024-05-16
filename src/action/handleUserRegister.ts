@@ -23,7 +23,7 @@ export async function handleUserRegister(formData: FormData) {
     if (roles.includes("artist") || roles.includes("songwriter")) {
         await sql`
             INSERT INTO PEMILIK_HAK_CIPTA (id, rate_royalti)
-            VALUES (${uuidPHC}, 0)
+            VALUES (${uuidPHC}, 100000)
         `;
     }
 
