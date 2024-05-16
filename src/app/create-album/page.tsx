@@ -14,6 +14,9 @@ export default async function UserCreateAlbumPage() {
     const result3 = await sql`SELECT s.id, s.email_akun, ak.nama FROM songwriter AS s JOIN akun ak ON s.email_akun = ak.email`;
     const songwriter = result3.rows;
 
+    const result4 = await sql `SELECT distinct genre from genre`;
+    const genre = result4.rows;
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="bg-white p-8 rounded-lg shadow-lg text-gray-900 max-w-md w-full">
@@ -63,26 +66,26 @@ export default async function UserCreateAlbumPage() {
                         </select>
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="songwriter" className="block text-sm font-medium text-gray-700">Songwriter:</label>
-                        <select
-                            id="songwriter"
-                            name="songwriter"
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled selected>Choose a songwriter</option>
-                            {songwriter.map((item) => (
-                                <option key = {item.id} value={item.id}>{item.nama}</option>
-                            ))}
-                        </select>
+                        <label htmlFor="songwriter" className="block text-sm font-medium text-gray-700">Songwriter :</label>
+                        {songwriter.map(s =>(
+                            <div>
+                                <label>
+                                    {s.nama as any}
+                                </label>
+                                <input type="checkbox" name = "songwriter" value = {s.id}/>
+                            </div>
+                        ))}
                     </div>
                     <div className="mb-4">
                         <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre:</label>
-                        <select
-                            id="genre"
-                            name="genre"
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled selected>Choose genre</option>
-                            <option value="genre">red Soul</option>
-                        </select>
+                        {genre.map(g =>(
+                            <div>
+                                <label>
+                                    {g.genre as any}
+                                </label>
+                                <input type="checkbox" name = "genre" value = {g.genre}/>
+                            </div>
+                        ))}
                     </div>
                     <div className="mb-4">
                         <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Durasi:</label>
