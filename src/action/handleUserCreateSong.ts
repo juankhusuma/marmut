@@ -7,7 +7,7 @@ export async function handleUserCreateSong(formData: FormData) {
     const albumId = formData.get("album")! as string;
     const artistId = formData.get("artist")! as string;
     const genre = formData.getAll("genre")! as string[];
-    const songwriterId = formData.get("songwriter")! as string;
+    const songwriterId = formData.getAll("songwriter")! as string[];
     const duration = formData.get("duration")! as string;
 
     console.log(albumId);
@@ -40,9 +40,11 @@ export async function handleUserCreateSong(formData: FormData) {
      `;
  }
 
+ for (const s of songwriterId){
+     await sql`INSERT INTO SONGWRITER_WRITE_SONG (id_songwriter, id_song)
+     VALUES (${s}, ${contentId})
+     `;
+ }
 
-    await sql`INSERT INTO SONGWRITER_WRITE_SONG (id_songwriter, id_song)
-    VALUES (${songwriterId}, ${contentId})
-    `;
     
 }

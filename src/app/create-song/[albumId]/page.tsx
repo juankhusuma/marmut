@@ -49,12 +49,14 @@ export default async function CreateSong({ params }: { params: {albumId: string}
                     </div>
                     <div className="mb-4">
                         <label htmlFor="songwriter" className="block text-sm font-medium text-gray-700">Songwriter :</label>
-                        <select id="songwriter" name="songwriter" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled selected>Choose songwriter</option>
-                            {songwriter.map((item) => (
-                                <option key = {item.id} value={item.id}>{item.nama}</option>
-                            ))}
-                        </select>
+                        {songwriter.map(s =>(
+                            <div>
+                                <label>
+                                    {s.nama as any}
+                                </label>
+                                <input type="checkbox" name = "songwriter" value = {s.id}/>
+                            </div>
+                        ))}
                     </div>
                     <div className="mb-4">
                         <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre:</label>
