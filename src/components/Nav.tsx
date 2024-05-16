@@ -1,15 +1,13 @@
-"use client";
+"use server"
 
-import { AuthContext } from "@/context/AuthProvider";
+import { checkUser } from "@/action/checkUser";
+import { handleUserLogout } from "@/action/handleUserLogout";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
 
+export default async function Nav() {
+    const user = await checkUser();
 
-export default function Nav() {
-    const [authenticated, setAuthenticated] = useState(false);
-    const { auth, logout } = useContext(AuthContext);
-
-    const loggedIn = true;
+    const loggedIn = user !== null;
 
     return (
         <div className="navbar bg-base-100">
@@ -43,7 +41,9 @@ function AuthorizedNav() {
             {isArtist && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album & Songs</Link>}
             {isLabel && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album</Link>}
             {(isLabel || isArtist) && <Link href="/playlist/list" className="btn btn-sm text-xs">Cek Royalti</Link>}
-            <button className="btn btn-sm text-xs">Logout</button>
+            <form action={handleUserLogout}>
+                <button type="submit" className="btn btn-sm text-xs">Logout</button>
+            </form>
         </div>
     )
 }
