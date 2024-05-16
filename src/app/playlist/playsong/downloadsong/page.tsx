@@ -1,8 +1,6 @@
 'use client';
 
-import { handleDownloadSong } from "@/action/handleUserPlaylist";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 
 export default function downloadsong() {
     const router = useRouter();
@@ -14,10 +12,6 @@ export default function downloadsong() {
     if (typeof window !== 'undefined') {
         var emailuser = localStorage.getItem("email");
     }
-
-    useEffect(() => {
-        handleDownloadSong(emailuser!, id_konten!)
-    },[])
     
     return (
         <div className="flex flex-col justify-center items-center p-10 space-y-1">

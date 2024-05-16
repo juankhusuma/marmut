@@ -26,10 +26,10 @@ export default function playlistdetail() {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [data, setData] = useState<playlist>();
-    const [datamusic, setDatamusic] = useState<Array<song>>();
     const id_user_playlist = searchParams.get('id_user_playlist');
     const id_playlist = searchParams.get('id_playlist');
+    const [data, setData] = useState<playlist>();
+    const [datamusic, setDatamusic] = useState<Array<song>>();
 
     useEffect(() => {
         handlePlaylistDTL(id_user_playlist).then(res => {
@@ -89,7 +89,11 @@ export default function playlistdetail() {
     }
 
     async function handleClickMusic( id_konten: string ) {
-        router.push(pathname.replace('kelolapl', 'playsong').replace('/playlistdetail', '') + `?` + createQueryString('id_konten', id_konten));
+        router.push(pathname + `/../../playsong` + `?` + createQueryString('id_konten', id_konten));
+    }
+
+    async function handleClickShuffle(id_user_playlist: string) {
+        router.push(pathname + `/../../playup` + `?` + createQueryString('id_user_playlist', id_user_playlist));
     }
 
     return (
@@ -103,8 +107,8 @@ export default function playlistdetail() {
                 <p>Tanggal Dibuat: {data?.tanggal_dibuat.toString()}</p>    
                 <p>Deskripsi: {data?.deskripsi}</p>
             </div>
-            <a href="#" className="text-center">Shuffle Play</a>
-            <a href="#" className="text-center">Kembali</a>
+            <a onClick={() => {handleClickShuffle(id_user_playlist!)}} className="text-center">Shuffle Play</a>
+            <a onClick={() => {router.push(pathname + `/../`)}} className="text-center">Kembali</a>
             <h1 className="text-center">Daftar Lagu</h1>
             <div className="overflow-y-auto h-96">
                 <table className="table table-zebra table-auto w-full">

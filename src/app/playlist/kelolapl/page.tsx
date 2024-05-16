@@ -1,5 +1,4 @@
 "use client";
-"use client";
 
 import { handleUserPL } from "@/action/handleUserPlaylist";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -82,7 +81,7 @@ export default function kelolapl() {
         triggerToast("success", "Playlist has successfull deleted!");
         setTimeout(() => {
             window.location.reload();
-        }, 3000);
+        }, 2000);
     }
 
     if (data != null) {
@@ -149,6 +148,6 @@ export default function kelolapl() {
                     </div>
                 </div>
                 </div>
-        )
+            )
+        }
     }
-}

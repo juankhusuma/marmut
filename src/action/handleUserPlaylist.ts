@@ -3,6 +3,8 @@
 import { sql } from "@vercel/postgres";
 import { UUID, randomUUID } from "crypto";
 
+// Select Section
+
 export async function handleUserPL(email: string | null) {
     const data = await sql`
     SELECT *
@@ -36,32 +38,6 @@ export async function handleSongPlaylist( id_playlist: string | null) {
     return data;
 }
 
-export async function handleDeletePlaylist(id_user_playlist: UUID | null) {
-    await sql`
-    DELETE FROM USER_PLAYLIST
-    WHERE id_user_playlist = ${id_user_playlist}
-    `;
-}
-
-export async function handleDeleteSong(id_playlist: string | null, id_konten: string | null) {
-    await sql`
-    DELETE FROM PLAYLIST_SONG
-    WHERE id_playlist = ${id_playlist} AND id_song = ${id_konten}
-    `;
-}
-
-export async function handleChangePlaylist(formData: FormData) {
-    const judul = formData.get("judul")! as string;
-    const deskripsi = formData.get("deskripsi")! as string;
-    const id_user_playlist = formData.get("id_user_playlist")! as string;
-
-    await sql`
-    UPDATE USER_PLAYLIST
-    SET judul = ${judul}, deskripsi = ${deskripsi}
-    WHERE id_user_playlist = ${id_user_playlist}
-    `;
-}
-
 export async function handleListSong() {
     const data = await sql`
     SELECT SONG.id_konten, KONTEN.judul, AKUN.nama
@@ -72,36 +48,6 @@ export async function handleListSong() {
     ORDER BY KONTEN.judul ASC
     `;
     return data;
-}
-
-export async function handleAddSong( id_konten: string | null, id_playlist: string | null) {
-    try {
-        await sql`
-        INSERT INTO PLAYLIST_SONG (id_playlist, id_song) VALUES (${id_playlist}, ${id_konten})
-        `
-    } catch {
-        console.log('addsongfailed');
-        return 'failed';
-    }
-    console.log('addsongsuccess');
-    return 'success';
-}
-
-export async function handleAddPlaylist(formData: FormData) {
-    const judul = formData.get("judul")! as string;
-    const deskripsi = formData.get("deskripsi")! as string;
-    const email = formData.get("email")! as string;
-    const date = new Date().toISOString().split('T')[0];
-
-    var id = randomUUID();
-    var id2 = randomUUID();
-    await sql`
-    INSERT INTO PLAYLIST (id) VALUES (${id})
-    `;
-    await sql`
-    INSERT INTO USER_PLAYLIST (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi)
-    VALUES (${email}, ${id2}, ${judul}, ${deskripsi}, 0, ${date}, ${id}, 0)
-    `;
 }
 
 export async function handlePlaylistchange( id_user_playlist: string | null) {
@@ -165,7 +111,7 @@ export async function handleSongGenre(id_konten: string | null) {
     return data;
 }
 
-export async function handeSongWriter(id_konten: string | null) {
+export async function handleSongWriter(id_konten: string | null) {
     const data = await sql`
     SELECT
         AKUN.nama
@@ -183,11 +129,75 @@ export async function handeSongWriter(id_konten: string | null) {
     return data;
 }
 
-export async function handleDownloadSong(email: string, id_song: string) {
+// Delete Section
+
+export async function handleDeletePlaylist(id_user_playlist: UUID | null) {
+    await sql`
+    DELETE FROM USER_PLAYLIST
+    WHERE id_user_playlist = ${id_user_playlist}
+    `;
+}
+
+export async function handleDeleteSong(id_playlist: string | null, id_konten: string | null) {
+    await sql`
+    DELETE FROM PLAYLIST_SONG
+    WHERE id_playlist = ${id_playlist} AND id_song = ${id_konten}
+    `;
+}
+
+// Update Section
+
+export async function handleChangePlaylist(formData: FormData) {
+    const judul = formData.get("judul")! as string;
+    const deskripsi = formData.get("deskripsi")! as string;
+    const id_user_playlist = formData.get("id_user_playlist")! as string;
+
+    await sql`
+    UPDATE USER_PLAYLIST
+    SET judul = ${judul}, deskripsi = ${deskripsi}
+    WHERE id_user_playlist = ${id_user_playlist}
+    `;
+}
+
+// Insert Section
+
+export async function handleAddSong( id_konten: string | null, id_playlist: string | null) {
+    try {
+        await sql`
+        INSERT INTO PLAYLIST_SONG (id_playlist, id_song) VALUES (${id_playlist}, ${id_konten})
+        `
+    } catch {
+        console.log('addsongfailed');
+        return 'failed';
+    }
+    console.log('addsongsuccess');
+    return 'success';
+}
+
+export async function handleAddPlaylist(formData: FormData) {
+    const judul = formData.get("judul")! as string;
+    const deskripsi = formData.get("deskripsi")! as string;
+    const email = formData.get("email")! as string;
+    const date = new Date().toISOString().split('T')[0];
+
+    var id = randomUUID();
+    var id2 = randomUUID();
+    await sql`
+    INSERT INTO PLAYLIST (id) VALUES (${id})
+    `;
+    await sql`
+    INSERT INTO USER_PLAYLIST (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi)
+    VALUES (${email}, ${id2}, ${judul}, ${deskripsi}, 0, ${date}, ${id}, 0)
+    `;
+}
+
+export async function handleAddDownloadedSong(email: string, id_song: string) {
     await sql`
     INSERT INTO DOWNLOADED_SONG (id_song, email_downloader) VALUES (${id_song}, ${email})
     `;
 }
+
+// Exist Section
 
 export async function isDownloaded(email: string, id_song: string) {
     return sql`

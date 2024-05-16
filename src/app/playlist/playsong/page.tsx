@@ -1,6 +1,6 @@
 'use client';
 
-import { handeSongWriter, handleDownloadSong, handleSongDetails, handleSongGenre, isDownloaded } from "@/action/handleUserPlaylist";
+import { handleSongWriter, handleAddDownloadedSong, handleSongDetails, handleSongGenre, isDownloaded } from "@/action/handleUserPlaylist";
 import { triggerToast } from "@/utils/toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { use, useCallback, useEffect, useState } from "react";
@@ -51,7 +51,7 @@ export default function playsong() {
                 setDataGenre(allRows);
             }
         });
-        handeSongWriter(id_konten).then(res => {
+        handleSongWriter(id_konten).then(res => {
             if (res.rowCount != 0){
                 let allRows = [];
                 for (let i = 0; i < res.rowCount; i++) {
@@ -90,11 +90,11 @@ export default function playsong() {
     }
 
     async function handleClickDownload(id_konten: string, judul: string) {
-        if (!(await isDownloaded(emailuser!, id_konten!)).rows[0]['exists']) {
-            handleDownloadSong(emailuser!, id_konten!)
-            router.push(pathname + `/downloadsong` + `?` + createQueryString2(['id_konten', 'judul'], [id_konten, judul]));
-        } else {
+        if ((await isDownloaded(emailuser!, id_konten!)).rows[0]['exists']) {  
             triggerToast('error', 'Music have been Downloaded!');
+        } else {
+            handleAddDownloadedSong(emailuser!, id_konten!)
+            router.push(pathname + `/downloadsong` + `?` + createQueryString2(['id_konten', 'judul'], [id_konten, judul]));
         }
     }
     
