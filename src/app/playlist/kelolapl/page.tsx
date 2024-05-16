@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { handleUserPL } from "@/action/handleUserPlaylist";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";

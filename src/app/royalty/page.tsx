@@ -1,0 +1,55 @@
+"use server";
+import { sql } from "@vercel/postgres";
+
+export default async function RoyaltyPage() {
+  // ini harus pake if else songwriter atau artist yang login buat dapetin royalti
+  const result = await sql`SELECT
+  k.judul AS judul_lagu,
+  a.judul AS judul_album,
+  s.total_play,
+  s.total_download,
+  (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat
+  FROM
+  song s
+  JOIN konten k ON s.id_konten = k.id
+  JOIN album a ON s.id_album = a.id
+  JOIN artist ar ON s.id_artist = ar.id
+  JOIN pemilik_hak_cipta phc ON ar.id_pemilik_hak_cipta = phc.id;
+  `;
+
+  const tampilan = result.rows;
+
+  const f = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  });
+
+  return (
+    <div className="p-10 flex justify-center">
+      <div>
+        <table className="table-auto w-full">
+          <thead>
+            <tr>
+              <th>Judul Lagu</th>
+              <th>Judul Album</th>
+              <th>Total Play</th>
+              <th>Total Download</th>
+              <th>Total Royalti Didapat</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tampilan.map((row, index) => (
+              <tr key={index}>
+                <td>{row.judul_lagu}</td>
+                <td>{row.judul_album}</td>
+                <td className="text-center">{row.total_play}</td>
+                <td className="text-center">{row.total_download}</td>
+                <td>{f.format(row.Total_Royalti_Didapat)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

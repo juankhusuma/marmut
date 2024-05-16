@@ -1,6 +1,6 @@
 'use client';
 
-export default function seeplaylist() {
+export default function ViewPlayListPage() {
     return (
         <div className="flex flex-col p-10 space-y-5">
             <h1 className="text-3xl font-bold text-center">User Playlist Detail</h1>

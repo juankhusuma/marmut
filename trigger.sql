@@ -1,0 +1,30 @@
+CREATE OR REPLACE FUNCTION set_non_premium_account() RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO NONPREMIUM (email);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_non_premium_account
+AFTER INSERT ON AKUN
+FOR EACH ROW
+EXECUTE FUNCTION set_non_premium_account();
+
+CREATE OR REPLACE FUNCTION check_email() RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.email ~* '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' THEN
+        RETURN NEW;
+    ELSE
+        RAISE EXCEPTION 'Email tidak valid';
+    END IF;
+END;
+
+CREATE TRIGGER check_email
+BEFORE INSERT OR UPDATE ON AKUN
+FOR EACH ROW
+EXECUTE FUNCTION check_email();
+
+CREATE TRIGGER check_email
+BEFORE INSERT OR UPDATE ON LABEL
+FOR EACH ROW
+EXECUTE FUNCTION check_email();
