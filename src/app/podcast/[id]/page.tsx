@@ -1,9 +1,11 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function PlayPodcastPage() {
-    const router = useRouter();
-    const id: string = router.query.id! as string
+    // const router = useRouter()
+    const searchParams = useSearchParams()
+    const id = searchParams.get("id")
+    console.log(id)
 
     return (
         <div className="flex justify-center">

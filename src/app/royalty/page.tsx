@@ -1,5 +1,7 @@
 "use server";
+import { checkUser } from "@/action/checkUser";
 import { sql } from "@vercel/postgres";
+import { redirect } from "next/navigation";
 
 export default async function RoyaltyPage() {
   // ini harus pake if else songwriter atau artist yang login buat dapetin royalti
@@ -23,6 +25,8 @@ export default async function RoyaltyPage() {
     style: 'currency',
     currency: 'IDR',
   });
+
+
 
   return (
     <div className="p-10 flex justify-center">
