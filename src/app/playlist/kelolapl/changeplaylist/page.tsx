@@ -48,11 +48,11 @@ export default function changeplaylist() {
                 <h1 className="text-3xl font-bold text-center">Ubah Playlist</h1>
                 <div className="flex flex-col">
                     <label htmlFor="email" className="label-text">Judul</label>
-                    <input className="input-sm input-primary mb-2" type="text" name="judul" placeholder={datapl?.judul}/>
+                    <input className="input-sm input-primary mb-2" type="text" name="judul" defaultValue={datapl?.judul}/>
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="email" className="label-text">Deskripsi</label>
-                    <input className="input-sm input-primary mb-2" type="text" name="deskripsi" placeholder ={datapl?.deskripsi}/>
+                    <input className="input-sm input-primary mb-2" type="text" name="deskripsi" defaultValue ={datapl?.deskripsi}/>
                 </div>
                 <button className="btn btn-primary" type="submit">Submit</button>
             </form>

@@ -1,5 +1,6 @@
 'use client';
 
+import { checkRole } from "@/action/checkRole";
 import { handleSongWriter, handleAddDownloadedSong, handleSongDetails, handleSongGenre, isDownloaded } from "@/action/handleUserPlaylist";
 import { triggerToast } from "@/utils/toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -98,6 +99,7 @@ export default function playsong() {
         }
     }
     
+    if(checkRole(emailuser!) == "PREMIUM")
     return (
         <div className="flex flex-col p-10 space-y-5">
             <h1 className="text-3xl font-bold text-center">Song Detail</h1>

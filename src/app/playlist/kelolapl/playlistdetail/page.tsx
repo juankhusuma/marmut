@@ -92,8 +92,8 @@ export default function playlistdetail() {
         router.push(pathname + `/../../playsong` + `?` + createQueryString('id_konten', id_konten));
     }
 
-    async function handleClickShuffle(id_user_playlist: string) {
-        router.push(pathname + `/../../playup` + `?` + createQueryString('id_user_playlist', id_user_playlist));
+    async function handleClickShuffle(id_user_playlist: string, id_playlist: string) {
+        router.push(pathname + `/../../playup` + `?` + createQueryString2(['id_user_playlist', 'id_playlist'], [id_user_playlist, id_playlist]));
     }
 
     return (
@@ -107,7 +107,7 @@ export default function playlistdetail() {
                 <p>Tanggal Dibuat: {data?.tanggal_dibuat.toString()}</p>    
                 <p>Deskripsi: {data?.deskripsi}</p>
             </div>
-            <a onClick={() => {handleClickShuffle(id_user_playlist!)}} className="text-center">Shuffle Play</a>
+            <a onClick={() => {handleClickShuffle(id_user_playlist!, id_playlist!)}} className="text-center">Shuffle Play</a>
             <a onClick={() => {router.push(pathname + `/../`)}} className="text-center">Kembali</a>
             <h1 className="text-center">Daftar Lagu</h1>
             <div className="overflow-y-auto h-96">
