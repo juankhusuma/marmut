@@ -89,7 +89,7 @@ export default function playlistdetail() {
     }
 
     async function handleClickMusic( id_konten: string ) {
-        router.push(pathname + `/../../playsong` + `?` + createQueryString('id_konten', id_konten));
+        router.push(pathname + `/../../` + `playsong` + `?` + createQueryString('id_konten', id_konten));
     }
 
     async function handleClickShuffle(id_user_playlist: string, id_playlist: string) {

@@ -64,11 +64,11 @@ export default function kelolapl() {
     )
 
     async function handleClickDetail( id_user_playlist:string, id_playlist:UUID ) {
-        router.push(pathname + '/playlistdetail' + '?' + createQueryString2(['id_user_playlist', 'id_playlist'], [id_user_playlist, id_playlist]))
+        router.push(pathname + `/playlistdetail` + `?` + createQueryString2(['id_user_playlist', 'id_playlist'], [id_user_playlist, id_playlist]))
     }
 
     async function handleClickChange( id_user_playlist:string ) {
-        router.push(pathname + '/changeplaylist' + '?' + createQueryString('id_user_playlist', id_user_playlist))
+        router.push(pathname + `/changeplaylist` + `?` + createQueryString('id_user_playlist', id_user_playlist))
     }
 
     async function handleClickDelete( id_user_playlist:UUID ) {

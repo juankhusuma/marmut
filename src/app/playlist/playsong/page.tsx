@@ -1,10 +1,11 @@
 'use client';
 
-import { checkRole } from "@/action/checkRole";
+import { Role } from "@/action/checkRole";
+import { checkUser } from "@/action/checkUser";
 import { handleSongWriter, handleAddDownloadedSong, handleSongDetails, handleSongGenre, isDownloaded } from "@/action/handleUserPlaylist";
 import { triggerToast } from "@/utils/toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type music = {
     judul_music: string
@@ -34,6 +35,7 @@ export default function playsong() {
     const [dataMusic, setDataMusic] = useState<music>();
     const [dataGenre, setDataGenre] = useState<Array<genre>>();
     const [dataWriter, setDataWriter] = useState<Array<writer>>();
+    const [isPremi, setIsPremi] = useState<boolean>();
 
     if (typeof window !== 'undefined') {
         var emailuser = localStorage.getItem("email");
@@ -61,6 +63,7 @@ export default function playsong() {
                 setDataWriter(allRows);
             }
         });
+        check_usr();
     },[])
 
     const createQueryString = useCallback(
@@ -90,6 +93,11 @@ export default function playsong() {
         router.push(pathname + `/songtpl` + `?` + createQueryString('id_konten', id_konten));
     }
 
+    async function check_usr() {
+        const user = await checkUser();
+        setIsPremi(user?.roles.includes("PREMIUM"))
+    }
+
     async function handleClickDownload(id_konten: string, judul: string) {
         if ((await isDownloaded(emailuser!, id_konten!)).rows[0]['exists']) {  
             triggerToast('error', 'Music have been Downloaded!');
@@ -99,40 +107,75 @@ export default function playsong() {
         }
     }
     
-    if(checkRole(emailuser!) == "PREMIUM")
-    return (
-        <div className="flex flex-col p-10 space-y-5">
-            <h1 className="text-3xl font-bold text-center">Song Detail</h1>
-            <div>
-                <p>Judul: {dataMusic?.judul_music}</p>
-                <p>Genre(s):</p>
-                <ul>
-                    {dataGenre?.map((row, index) => (
-                        <li key={index}>-   {row.genre}</li>
-                    ))}
-                </ul>
-                <p>Artist: {dataMusic?.nama_artist}</p>
-                <p>Song Writer(s):</p>
-                <ul>
-                    {dataWriter?.map((row, index) => (
-                        <li key={index}>-   {row.nama}</li>
-                    ))}
-                </ul>
-                <p>Durasi: {dataMusic?.durasi}</p>
-                <p>Tanggal Rilis: {dataMusic?.tanggal_rilis.toString()}</p>
-                <p>Tahun: {dataMusic?.tahun}</p>
-                <p>Total Play: {dataMusic?.total_play}</p>
-                <p>Total Downloads: {dataMusic?.total_download}</p>
-                <p>Album: {dataMusic?.judul_album}</p>
+    if(isPremi) {
+        return (
+            <div className="flex flex-col p-10 space-y-5">
+                <h1 className="text-3xl font-bold text-center">Song Detail</h1>
+                <div>
+                    <p>Judul: {dataMusic?.judul_music}</p>
+                    <p>Genre(s):</p>
+                    <ul>
+                        {dataGenre?.map((row, index) => (
+                            <li key={index}>-   {row.genre}</li>
+                        ))}
+                    </ul>
+                    <p>Artist: {dataMusic?.nama_artist}</p>
+                    <p>Song Writer(s):</p>
+                    <ul>
+                        {dataWriter?.map((row, index) => (
+                            <li key={index}>-   {row.nama}</li>
+                        ))}
+                    </ul>
+                    <p>Durasi: {dataMusic?.durasi}</p>
+                    <p>Tanggal Rilis: {dataMusic?.tanggal_rilis.toString()}</p>
+                    <p>Tahun: {dataMusic?.tahun}</p>
+                    <p>Total Play: {dataMusic?.total_play}</p>
+                    <p>Total Downloads: {dataMusic?.total_download}</p>
+                    <p>Album: {dataMusic?.judul_album}</p>
+                </div>
+                <input id="playbar" type="range" defaultValue={0} className="mx-96" />
+                <a href="#" className="text-center">[Play]</a>
+                <a onClick={() => {handleClickSongtoPL(dataMusic!.id_konten)}} className="text-center">[Add to Playlist]</a>
+                <a onClick={ () => {handleClickDownload(dataMusic!.id_konten, dataMusic!.judul_music)}} className="text-center">[Download]</a>
+                <a onClick={ () => {
+                    router.replace('../kelolapl');
+                }} className="text-center">[Kembali]</a>
             </div>
-            <input id="playbar" type="range" defaultValue={0} className="mx-96" />
-            <a href="#" className="text-center">[Play]</a>
-            <a onClick={() => {handleClickSongtoPL(dataMusic!.id_konten)}} className="text-center">[Add to Playlist]</a>
-            <a onClick={ () => {handleClickDownload(dataMusic!.id_konten, dataMusic!.judul_music)}} className="text-center">[Download]</a>
-            <a onClick={ () => {
-                router.replace('../kelolapl');
-            }} className="text-center">[Kembali]</a>
-        </div>
-        
-    )
+        )
+    } else {
+        return (
+            <div className="flex flex-col p-10 space-y-5">
+                <h1 className="text-3xl font-bold text-center">Song Detail</h1>
+                <div>
+                    <p>Judul: {dataMusic?.judul_music}</p>
+                    <p>Genre(s):</p>
+                    <ul>
+                        {dataGenre?.map((row, index) => (
+                            <li key={index}>-   {row.genre}</li>
+                        ))}
+                    </ul>
+                    <p>Artist: {dataMusic?.nama_artist}</p>
+                    <p>Song Writer(s):</p>
+                    <ul>
+                        {dataWriter?.map((row, index) => (
+                            <li key={index}>-   {row.nama}</li>
+                        ))}
+                    </ul>
+                    <p>Durasi: {dataMusic?.durasi}</p>
+                    <p>Tanggal Rilis: {dataMusic?.tanggal_rilis.toString()}</p>
+                    <p>Tahun: {dataMusic?.tahun}</p>
+                    <p>Total Play: {dataMusic?.total_play}</p>
+                    <p>Total Downloads: {dataMusic?.total_download}</p>
+                    <p>Album: {dataMusic?.judul_album}</p>
+                </div>
+                <input id="playbar" type="range" defaultValue={0} className="mx-96" />
+                <a href="#" className="text-center">[Play]</a>
+                <a onClick={() => {handleClickSongtoPL(dataMusic!.id_konten)}} className="text-center">[Add to Playlist]</a>
+                <a onClick={ () => {
+                    router.replace('../kelolapl');
+                }} className="text-center">[Kembali]</a>
+            </div>
+        )
+    }
+
 }
