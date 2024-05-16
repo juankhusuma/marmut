@@ -1,11 +1,10 @@
 'use client';
 
-import { handlePlaylistDTL, handleSongPlaylist } from "@/action/handlePlaylistDetail";
+import { handleDeletePlaylist, handleDeleteSong, handlePlaylistDTL, handleSongPlaylist } from "@/action/handleUserPlaylist";
+import { triggerToast } from "@/utils/toast";
 import { UUID } from "crypto";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
-const myState = history.state;
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 type playlist = {
     judul: string
@@ -20,38 +19,78 @@ type song = {
     judul: string
     nama: string
     durasi: number
+    id_konten: UUID
 }
 
 export default function playlistdetail() {
-    const [routeState, setRouteState] = useState({});
-    const [data, setData] = useState<playlist>();
-    const [dataMusic, setDataMusic] = useState<Array<song>>();
-
-    const pathname = usePathname();
     const router = useRouter();
-
-    function handleClickAddMusic( id_playlist:UUID ) {
-        history.pushState({ id_playlist: id_playlist}, "", pathname + "/addsong")
-        router.push("../addsong");
-    }
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [data, setData] = useState<playlist>();
+    const [datamusic, setDatamusic] = useState<Array<song>>();
+    const id_user_playlist = searchParams.get('id_user_playlist');
+    const id_playlist = searchParams.get('id_playlist');
 
     useEffect(() => {
-        setRouteState(myState);
-        handlePlaylistDTL(myState.id_user_playlist).then(res => {
+        handlePlaylistDTL(id_user_playlist).then(res => {
             if (res.rowCount != 0){
                 setData(JSON.parse(JSON.stringify(res.rows[0])));
             }
         });
-        handleSongPlaylist(myState.id_playlist).then(res => {
+        handleSongPlaylist(id_playlist).then(res => {
             if (res.rowCount != 0){
                 let allRows = [];
                 for (let i = 0; i < res.rowCount; i++) {
                     allRows.push(JSON.parse(JSON.stringify(res.rows.at(i))));
                 }
-                setDataMusic(allRows);
+                setDatamusic(allRows);
             }
         });
     }, [])
+
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+          const params = new URLSearchParams()
+          params.set(name, value)
+     
+          return params.toString()
+        },
+        [searchParams]
+    )
+
+    const createQueryString2 = useCallback(
+        (name: Array<string>, value: Array<string>) => {
+          const params = new URLSearchParams()
+          params.set(name[0], value[0])
+          for (let index = 1; index < name.length; index++) {
+            params.append(name[index], value[index])
+          }
+     
+          return params.toString()
+        },
+        [searchParams]
+    )
+
+    async function handleClickDelete( id_playlist:string, id_konten:string ) {
+        try {
+            await handleDeleteSong(id_playlist, id_konten);
+        } catch {
+            triggerToast("error", "Delete Song failure!");
+            return;
+        }
+        triggerToast("success", "Song has successfull deleted!")
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+    
+    async function handleClickAddMusic( id_playlist: string, id_user_playlist: string) {
+        router.push(pathname + `/../addsong` + `?` + createQueryString2(['id_playlist', 'id_user_playlist'], [id_playlist, id_user_playlist]));
+    }
+
+    async function handleClickMusic( id_konten: string ) {
+        router.push(pathname.replace('kelolapl', 'playsong').replace('/playlistdetail', '') + `?` + createQueryString('id_konten', id_konten));
+    }
 
     return (
         <div className="flex flex-col p-10 space-y-5">
@@ -78,16 +117,16 @@ export default function playlistdetail() {
                         </tr>
                     </thead>
                     <tbody>
-                        {dataMusic?.map((row, index) => (
+                        {datamusic?.map((row, index) => (
                             <tr key={index} className="bg-black-200">
                                 <th className="border px-4 py-2">{row.judul}</th>
                                 <th className="border px-4 py-2">{row.nama}</th>
                                 <th className="border px-4 py-2">{row.durasi}</th>
                                 <th className="border px-4 py-2">
                                 <div className="flex flex-col">
-                                    <a href="#">[Lihat]</a>
-                                    <a href="#">[Play]</a>
-                                    <a href="#">[Hapus]</a>
+                                    <a onClick={ () => handleClickMusic(row.id_konten)}>[Lihat]</a>
+                                    <a>[Play]</a>
+                                    <a onClick={ () => handleClickDelete(id_playlist!, row.id_konten)}>[Hapus]</a>
                                 </div>
                             </th>
                             </tr>
@@ -95,7 +134,7 @@ export default function playlistdetail() {
                     </tbody>
                 </table>
             </div>
-            <a onClick={ () => handleClickAddMusic(myState.id_playlist)} className="btn btn-primary">Tambah Lagu</a>
+            <a onClick={ () => handleClickAddMusic(id_playlist!, id_user_playlist!)} className="btn btn-primary">Tambah Lagu</a>
         </div>
     )
 };

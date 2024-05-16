@@ -1,6 +1,6 @@
 'use client';
 
-import { handleAddPlaylist } from "@/action/handleAddPlaylist";
+import { handleAddPlaylist } from "@/action/handleUserPlaylist";
 import { FormEvent } from "react";
 import { triggerToast } from "@/utils/toast";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ export default function addplaylist() {
             return;
         }
         triggerToast("success", "Playlist has successfull added!");
-        router.back();
+        router.replace('../kelolapl');
     }
 
     return (

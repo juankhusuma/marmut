@@ -1,60 +1,58 @@
 'use client';
 
-import { handleAddPlaylist } from "@/action/handleAddPlaylist";
-import { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { triggerToast } from "@/utils/toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { UUID } from "crypto";
+import { handleChangePlaylist, handlePlaylistchange } from "@/action/handleUserPlaylist";
 
 const myState = history.state;
 
-type userpl = {
+type user_playlist = {
+    id_user_playlist: string
     judul: string
-    jumlah_lagu: number
-    total_durasi: number
-    id_user_playlist: UUID
-    id_playlist: UUID
+    deskripsi: string
 }
 
-var user_playlist:userpl;
-
 export default function changeplaylist() {
-    const [routeState, setRouteState] = useState({});
+    const [datapl, setDatapl] = useState<user_playlist>();
     const router = useRouter();
-    if (typeof window !== 'undefined') {
-        var emailuser = localStorage.getItem("email");
-    }
+    const searchParams = useSearchParams();
+    const id_user_playlist = searchParams.get('id_user_playlist');
 
     useEffect(() => {
-        setRouteState(myState);
-        user_playlist = myState.user_playlist;
+        handlePlaylistchange(id_user_playlist).then(res => {
+            if (res.rowCount != 0){
+                setDatapl(JSON.parse(JSON.stringify(res.rows[0])));
+            }
+        });
     }, [])
 
     async function changePlaylisttoDatabase(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
-        formData.append('email', emailuser!);
+        formData.append('id_user_playlist', id_user_playlist!)
         try {
-            await handleAddPlaylist(formData);
+            await handleChangePlaylist(formData);
         } catch {
             triggerToast("error", "Change Playlist failure!");
             return;
         }
         triggerToast("success", "Playlist has successfull Changed!");
-        router.back();
+        router.replace('../kelolapl');
     }
 
     return (
         <div className="flex flex-col justify-center items-center space-y-5">
             <form onSubmit={changePlaylisttoDatabase} className="form-control w-1/3">
-                <h1 className="text-3xl font-bold text-center">Tambah Playlist</h1>
+                <h1 className="text-3xl font-bold text-center">Ubah Playlist</h1>
                 <div className="flex flex-col">
                     <label htmlFor="email" className="label-text">Judul</label>
-                    <input className="input-sm input-primary mb-2" type="text" name="judul" value={user_playlist.judul}/>
+                    <input className="input-sm input-primary mb-2" type="text" name="judul" placeholder={datapl?.judul}/>
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="email" className="label-text">Deskripsi</label>
-                    <input className="input-sm input-primary mb-2" type="text" name="deskripsi" />
+                    <input className="input-sm input-primary mb-2" type="text" name="deskripsi" placeholder ={datapl?.deskripsi}/>
                 </div>
                 <button className="btn btn-primary" type="submit">Submit</button>
             </form>
