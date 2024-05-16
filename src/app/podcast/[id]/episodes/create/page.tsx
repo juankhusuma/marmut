@@ -1,6 +1,19 @@
+import { checkUser } from "@/action/checkUser";
 import { handleCreateEpisode } from "@/action/handleCreateEpisode";
+import { redirect } from "next/navigation";
 
-export default function CreatePodcastEpisodePage({ params }: { params: { id: string } }) {
+export default async function CreatePodcastEpisodePage({ params }: { params: { id: string } }) {
+    const user = await checkUser();
+    const isLoggedIn = user !== null;
+
+    if (!isLoggedIn) {
+        redirect("/auth/login")
+    }
+
+    if (!user.roles.includes("PODCASTER")) {
+        redirect("/")
+    }
+
     return (
         <div className="flex justify-center p-10">
             <form action={handleCreateEpisode} className="form-control gap-5 border-white border p-10">
