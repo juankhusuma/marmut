@@ -22,15 +22,12 @@ export async function handleUserCreateSong(formData: FormData) {
         VALUES (${contentId}, ${artistId}, '6496aa56-9f5d-4bda-ae71-b9a8e2f14b84', 0, 0);
     `;
 
-    //yang ini masih belum tau caranya ngoper album nya gimana soalnya harus
-    //refer dari page sebelumnya
     await sql`
     UPDATE ALBUM
     SET jumlah_lagu = jumlah_lagu + 1
-    WHERE id = '6496aa56-9f5d-4bda-ae71-b9a8e2f14b84';
+    WHERE id = ${albumId};
 `;
 
-    //gatau ini perlu atau ga
     await sql`
         INSERT INTO GENRE (id_konten, genre)
         VALUES (${contentId}, ${genre});

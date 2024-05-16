@@ -5,8 +5,6 @@ import { sql } from "@vercel/postgres";
 import { FormEvent } from "react";
 
 export default async function UserCreateAlbumPage() {
-    // const result = await sql`SELECT email_akun, nama from artist as a join akun ak on a.email_akun = ak.email`
-    // const artist = result.rows
     const result = await sql`SELECT a.id, a.email_akun, ak.nama FROM artist AS a JOIN akun ak ON a.email_akun = ak.email`;
     const artist = result.rows;
 

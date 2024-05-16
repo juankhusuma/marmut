@@ -2,11 +2,22 @@
 
 import { handleUserCreateSong } from "@/action/handleUserCreateSong";
 import { sql } from "@vercel/postgres";
+import { useRouter } from 'next/router';
+// import { useEffect, useState } from 'react';
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
-export default async function CreateSong() {
+export default async function CreateSong({ params }: { params: {albumId: string}}) {
+
+    params.albumId = decodeURIComponent(params.albumId);
 
     const result = await sql`SELECT a.id, a.email_akun, ak.nama FROM artist AS a JOIN akun ak ON a.email_akun = ak.email`;
     const artist = result.rows;
+
+    const result3 = await sql `SELECT judul from album where album.id = ${params.albumId}`
+    const p = result3.rows[0]?.judul;
+
+    console.log(p);
     
     const result2 = await sql`SELECT s.id, s.email_akun, ak.nama FROM songwriter AS s JOIN akun ak ON s.email_akun = ak.email`;
     const songwriter = result2.rows;
@@ -18,7 +29,7 @@ export default async function CreateSong() {
                 <form action = {handleUserCreateSong} className = "form-control">
                     <div className="mb-4">
                         <label htmlFor="album" className="block text-sm font-medium text-gray-700">Album:</label>
-                        <input type="text" id="album" name="album" placeholder="Input the album..." className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled />
+                        <input type="text" value={p} id="album" name="album" placeholder="Input the album..." className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" disabled />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="songtitle" className="block text-sm font-medium text-gray-700">Judul:</label>
