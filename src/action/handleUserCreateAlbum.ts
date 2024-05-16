@@ -38,15 +38,6 @@ export async function handleUserCreateAlbum(formData: FormData) {
     WHERE id = ${albumId};
 `;
 
-<<<<<<< HEAD
-=======
-    //gatau ini perlu atau ga
-    await sql`
-        INSERT INTO GENRE (id_konten, genre)
-        VALUES (${contentId}, ${genre});
-    `;
-
->>>>>>> db9512b2b6d3374ad66e597a4961e638f0f21a6b
     for (const g of genre){
         await sql`
             INSERT INTO GENRE (id_konten, genre)
