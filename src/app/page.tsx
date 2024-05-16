@@ -129,8 +129,14 @@ function Songs() {
   ))
 }
 
-function Podcast() {
-  const isNotNone = true;
+async function Podcast() {
+  const user = await checkUser()!;
+  const podcasts = (await sql`
+  SELECT * FROM podcast p 
+  JOIN konten k ON p.id_konten = k.id
+  WHERE email_podcaster = ${user!.email}
+  `).rows;
+  const isNotNone = podcasts.length > 0;
   return (isNotNone ? (<div className="flex w-full flex-col items-center">
     <h1>Podcast Pengguna</h1>
     <table className="table">
@@ -141,18 +147,14 @@ function Podcast() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Podcast 1</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-        <tr>
-          <td>Podcast 2</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-        <tr>
-          <td>Podcast 2</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
+        {
+          podcasts.map((podcast: any) => (
+            <tr key={podcast.id_konten}>
+              <td>{podcast.judul}</td>
+              <td><Link href={`/podcast/${podcast.id_konten}`}>[Lihat]</Link></td>
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </div>) : (

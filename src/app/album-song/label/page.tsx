@@ -2,16 +2,27 @@
 
 import Link from 'next/link';
 import { sql } from "@vercel/postgres";
+<<<<<<< HEAD
 import { unstable_noStore as noStore } from 'next/cache';
 import { handleDeleteAlbum } from "@/action/handleDeleteAlbum";
 import { checkUser } from "@/action/checkUser";
 
 export default async function AlbumListLabel() {
+=======
+import {unstable_noStore as noStore} from 'next/cache'
+import {handleDeleteAlbum} from "@/action/handleDeleteAlbum";
+import { checkUser } from "@/action/checkUser";
+
+
+export default async function AlbumListLabel() {
+
+>>>>>>> db9512b2b6d3374ad66e597a4961e638f0f21a6b
   noStore();
 
   const user = await checkUser();
   const isArtist = user?.roles.includes("ARTIST");
   const isSongwriter = user?.roles.includes("SONGWRITER");
+<<<<<<< HEAD
 
   if (isArtist || isSongwriter) {
     return (
@@ -30,6 +41,13 @@ export default async function AlbumListLabel() {
     JOIN label la ON a.id_label = la.id
     WHERE la.email = ${user?.email}
   `;
+=======
+  const isLabel = user?.roles.includes("LABEL");
+
+  const result = await sql `SELECT a.id, a.judul, a.jumlah_lagu, a.total_durasi
+  from album a, label l
+  WHERE a.id_label = l.id AND l.email = ${user?.email}`;
+>>>>>>> db9512b2b6d3374ad66e597a4961e638f0f21a6b
   const album = result.rows;
 
   return (
@@ -69,11 +87,19 @@ export default async function AlbumListLabel() {
                           Lihat Daftar Lagu
                         </button>
                       </Link>
+<<<<<<< HEAD
                       <form action={handleDeleteAlbum}>
                         <input type="hidden" name="id" value={album.id} />
                         <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                           Hapus
                         </button>
+=======
+                      <form action ={handleDeleteAlbum}>
+                        <input type = "hidden" name = "id" value = {album.id} />
+                      <button type = "submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                        Hapus
+                    </button>
+>>>>>>> db9512b2b6d3374ad66e597a4961e638f0f21a6b
                       </form>
                     </td>
                   </tr>
