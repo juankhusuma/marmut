@@ -14,6 +14,8 @@ export async function handleUserCreateAlbum(formData: FormData) {
     const albumId = uuid();
     const contentId = uuid();
 
+    // console.log()
+
 
     await sql`
         INSERT INTO ALBUM(id, judul, jumlah_lagu, id_label, total_durasi)
@@ -41,5 +43,18 @@ export async function handleUserCreateAlbum(formData: FormData) {
         INSERT INTO GENRE (id_konten, genre)
         VALUES (${contentId}, ${genre});
     `;
+
+    for (const g of genre){
+        await sql`
+            INSERT INTO GENRE (id_konten, genre)
+            VALUES (${contentId}, ${g});
+        `;
+    }
+   
+    for (const s of songwriterId){
+        await sql`INSERT INTO SONGWRITER_WRITE_SONG (id_songwriter, id_song)
+        VALUES (${s}, ${contentId})
+        `;
+    }
     
 }
