@@ -2,6 +2,7 @@
 
 import { handleUserCreateSong } from "@/action/handleUserCreateSong";
 import { sql } from "@vercel/postgres";
+import { checkUser } from "@/action/checkUser";
 
 export default async function CreateSong({ params }: { params: {albumId: string}}) {
 
@@ -20,6 +21,10 @@ export default async function CreateSong({ params }: { params: {albumId: string}
 
     const result4 = await sql `SELECT distinct genre from genre`;
     const genre = result4.rows;
+
+    const user = await checkUser();
+    const isArtist = user?.roles.includes("ARTIST");
+    const isSongwriter = user?.roles.includes("SONGWRITER");
 
 
     return (
@@ -40,21 +45,35 @@ export default async function CreateSong({ params }: { params: {albumId: string}
                     </div>
                     <div className="mb-4">
                         <label htmlFor="artist" className="block text-sm font-medium text-gray-700">Artist:</label>
-                        <select id="artist" name="artist" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="" disabled selected>Choose a artist</option>
-                            {artist.map((item) => (
-                                <option key = {item.id} value={item.id}>{item.nama}</option>
-                            ))}
+                        <select
+                            id="artist"
+                            name="artist"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-50 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <option value="" disabled selected>Choose an artist</option>
+                            {artist.map((item) => {
+                                if (isArtist && user && item.email_akun === user.email) {
+                                    return <option key={item.id} value={item.id}>{item.nama}</option>;
+                                } else if (isArtist) {
+                                    return <option key={item.id} value={item.id} disabled>{item.nama}</option>;
+                                } else {
+                                    return <option key={item.id} value={item.id}>{item.nama}</option>;
+                                }
+                            })}
                         </select>
                     </div>
                     <div className="mb-4">
                         <label htmlFor="songwriter" className="block text-sm font-medium text-gray-700">Songwriter :</label>
-                        {songwriter.map(s =>(
-                            <div>
+                        {songwriter.map((s) => (
+                            <div key={s.id}>
                                 <label>
-                                    {s.nama as any}
+                                    {s.nama}
                                 </label>
-                                <input type="checkbox" name = "songwriter" value = {s.id}/>
+                                <input
+                                    type="checkbox"
+                                    name="songwriter"
+                                    value={s.id}
+                                    defaultChecked={Boolean(isSongwriter && user && s.email_akun === user.email)}
+                                />
                             </div>
                         ))}
                     </div>
