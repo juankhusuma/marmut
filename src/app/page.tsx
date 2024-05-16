@@ -160,33 +160,43 @@ function Podcast() {
   ))
 }
 
-function Album() {
-  const isNotNone = false;
-  return (isNotNone ? (<div className="flex w-full flex-col items-center">
-    <h1>Album</h1>
-    <table className="table">
-      <thead>
-        <tr>
-          <td>Judul</td>
-          <td>Actions</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Album 1</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-        <tr>
-          <td>Album 2</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-        <tr>
-          <td>Album 2</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>) : (
-    <p>Album: "Belum Memproduksi Album".</p>
-  ))
+async function Album() {
+  const user = await checkUser();
+  const result = await sql`
+    SELECT a.judul, a.id
+    FROM album a
+    JOIN label la ON a.id_label = la.id
+    WHERE la.email = ${user?.email}
+  `;
+
+  const albums = result.rows;
+  const isNotNone = albums.length > 0; //penanda ada isinya
+
+  return (
+    <div className="flex w-full flex-col items-center">
+      <h1>Album</h1>
+      {isNotNone ? (
+        <table className="table">
+          <thead>
+            <tr>
+              <td>Judul</td>
+              <td>Actions</td>
+            </tr>
+          </thead>
+          <tbody>
+            {albums.map((album, index) => (
+              <tr key={index}>
+                <td>{album.judul}</td>
+                <td>
+                  <Link href={`/album-song/label/${album.id}`}>[Lihat]</Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Album: "Belum Memproduksi Album".</p>
+      )}
+    </div>
+  );
 }

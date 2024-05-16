@@ -2,23 +2,34 @@
 
 import Link from 'next/link';
 import { sql } from "@vercel/postgres";
-import {unstable_noStore as noStore} from 'next/cache'
-import {handleDeleteAlbum} from "@/action/handleDeleteAlbum";
+import { unstable_noStore as noStore } from 'next/cache';
+import { handleDeleteAlbum } from "@/action/handleDeleteAlbum";
 import { checkUser } from "@/action/checkUser";
 
-
 export default async function AlbumListLabel() {
-
   noStore();
 
   const user = await checkUser();
   const isArtist = user?.roles.includes("ARTIST");
   const isSongwriter = user?.roles.includes("SONGWRITER");
-  const isLabel = user?.roles.includes("LABEL");
 
-  const result = await sql `SELECT a.id, a.judul, a.jumlah_lagu, a.total_durasi
-  from album a, label l
-  WHERE a.id_label = l.id AND l.email = ${user?.email}`;
+  if (isArtist || isSongwriter) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="bg-white p-6 rounded-lg shadow-lg text-gray-900 max-w-md w-full">
+          <h3 className="text-lg font-semibold text-center mb-4">Access Denied</h3>
+          <p className="text-center">You are not allowed to access this page!</p>
+        </div>
+      </div>
+    );
+  }
+
+  const result = await sql`
+    SELECT a.id, a.judul, a.jumlah_lagu, a.total_durasi
+    FROM album a
+    JOIN label la ON a.id_label = la.id
+    WHERE la.email = ${user?.email}
+  `;
   const album = result.rows;
 
   return (
@@ -58,11 +69,11 @@ export default async function AlbumListLabel() {
                           Lihat Daftar Lagu
                         </button>
                       </Link>
-                      <form action ={handleDeleteAlbum}>
-                        <input type = "hidden" name = "id" value = {album.id} />
-                      <button type = "submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
-                        Hapus
-                    </button>
+                      <form action={handleDeleteAlbum}>
+                        <input type="hidden" name="id" value={album.id} />
+                        <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                          Hapus
+                        </button>
                       </form>
                     </td>
                   </tr>

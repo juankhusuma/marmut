@@ -7,9 +7,9 @@ export async function handleUserCreateAlbum(formData: FormData) {
     const label = formData.get("label")! as string;
     const songtitle = formData.get("songtitle")! as string;
     const artistId = formData.get("artist")! as string;
-    const genre = formData.get("genre")! as string;
+    const genre = formData.getAll("genre")! as string[];
     const duration = formData.get("duration")! as string;
-    const songwriterId = formData.get("songwriter")! as string;
+    const songwriterId = formData.getAll("songwriter")! as string[];
 
     const albumId = uuid();
     const contentId = uuid();
@@ -37,12 +37,6 @@ export async function handleUserCreateAlbum(formData: FormData) {
     SET jumlah_lagu = jumlah_lagu + 1
     WHERE id = ${albumId};
 `;
-
-    //gatau ini perlu atau ga
-    await sql`
-        INSERT INTO GENRE (id_konten, genre)
-        VALUES (${contentId}, ${genre});
-    `;
 
     for (const g of genre){
         await sql`
