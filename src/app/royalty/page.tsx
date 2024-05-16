@@ -14,7 +14,7 @@ export default async function RoyaltyPage() {
   JOIN konten k ON s.id_konten = k.id
   JOIN album a ON s.id_album = a.id
   JOIN artist ar ON s.id_artist = ar.id
-  JOIN pemilik_hak_cipta phc ON ar.id_pemilik_hak_cipta = phc.id;
+  LEFT JOIN pemilik_hak_cipta phc ON ar.id_pemilik_hak_cipta = phc.id;
   `;
 
   const tampilan = result.rows;
