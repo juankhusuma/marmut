@@ -37,14 +37,16 @@ export default async function Nav() {
     )
 }
 
-function AuthorizedNav() {
-    const isLabel = false;
-    const isPremium = false && !isLabel;
-    const isPodcaster = false && !isLabel;
-    const isArtist = false && !isLabel;
+async function AuthorizedNav() {
+    const user = await checkUser();
+    const roles = user!.roles;
+    const isLabel = roles.includes("LABEL");
+    const isPremium = roles.includes("PREMIUM") && !isLabel;
+    const isPodcaster = roles.includes("PODCASTER") && !isLabel;
+    const isArtist = roles.includes("ARTIST") && !isLabel;
     return (
         <div className="navbar-end gap-2">
-            <Link href="/dashboard" className="btn btn-sm text-xs">Dashboard</Link>
+            <Link href="/" className="btn btn-sm text-xs">Dashboard</Link>
             {!isLabel && <Link href="/playlist/chart" className="btn btn-sm text-xs">Chart</Link>}
             {!isLabel && (<form className="flex">
                 <input type="text" className="input input-sm input-bordered" name="" id="" />
