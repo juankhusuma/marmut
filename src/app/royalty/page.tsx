@@ -1,5 +1,7 @@
 "use server";
+import { checkUser } from "@/action/checkUser";
 import { sql } from "@vercel/postgres";
+import { redirect } from "next/navigation";
 
 export default async function RoyaltyPage() {
   // ini harus pake if else songwriter atau artist yang login buat dapetin royalti
@@ -14,7 +16,7 @@ export default async function RoyaltyPage() {
   JOIN konten k ON s.id_konten = k.id
   JOIN album a ON s.id_album = a.id
   JOIN artist ar ON s.id_artist = ar.id
-  JOIN pemilik_hak_cipta phc ON ar.id_pemilik_hak_cipta = phc.id;
+  LEFT JOIN pemilik_hak_cipta phc ON ar.id_pemilik_hak_cipta = phc.id;
   `;
 
   const tampilan = result.rows;
@@ -23,6 +25,8 @@ export default async function RoyaltyPage() {
     style: 'currency',
     currency: 'IDR',
   });
+
+
 
   return (
     <div className="p-10 flex justify-center">

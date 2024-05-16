@@ -1,17 +1,13 @@
-"use client";
+"use server"
 
+import { checkUser } from "@/action/checkUser";
+import { handleUserLogout } from "@/action/handleUserLogout";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
+export default async function Nav() {
+    const user = await checkUser();
 
-export default function Nav() {
-    const [authenticated, setAuthenticated] = useState(false);
-
-    useEffect(() => {
-        if (localStorage.getItem("email")) {
-            setAuthenticated(true);
-        }
-    }, [])
+    const loggedIn = user !== null;
 
     return (
         <div className="navbar bg-base-100">
@@ -34,31 +30,45 @@ export default function Nav() {
                 </div>
                 <Link href="/" className="btn btn-ghost text-xl">Marmut</Link>
             </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
-                    <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li><a>Item 3</a></li>
-                </ul>
-            </div>
-            <div className="navbar-end">
-                {
-                    authenticated ?
-                        <button onClick={() => {
-                            localStorage.removeItem("email");
-                            setAuthenticated(false);
-                        }} className="btn">Logout</button> :
-                        <Link href="/auth/" className="btn">Login</Link>
-                }
-            </div>
+            {
+                loggedIn ? <AuthorizedNav /> : <UnauthorizedNav />
+            }
+        </div>
+    )
+}
+
+function AuthorizedNav() {
+    const isLabel = false;
+    const isPremium = false && !isLabel;
+    const isPodcaster = false && !isLabel;
+    const isArtist = false && !isLabel;
+    return (
+        <div className="navbar-end gap-2">
+            <Link href="/dashboard" className="btn btn-sm text-xs">Dashboard</Link>
+            {!isLabel && <Link href="/playlist/chart" className="btn btn-sm text-xs">Chart</Link>}
+            {!isLabel && (<form className="flex">
+                <input type="text" className="input input-sm input-bordered" name="" id="" />
+                <input type="submit" value="Search" className="btn btn-sm text-xs" />
+            </form>)}
+            {!isLabel && <Link href="/playlist/kelolapl" className="btn btn-sm text-xs">Kelola Playlist</Link>}
+            {!isLabel && <Link href="/playlist/kelolapl" className="btn btn-sm text-xs">Langganan Paket</Link>}
+            {isPremium && <Link href="/downloaded-songs" className="btn btn-sm text-xs">Kelola Downloads & Songs</Link>}
+            {isPodcaster && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Podcast</Link>}
+            {isArtist && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album & Songs</Link>}
+            {isLabel && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album</Link>}
+            {(isLabel || isArtist) && <Link href="/playlist/list" className="btn btn-sm text-xs">Cek Royalti</Link>}
+            <form action={handleUserLogout}>
+                <button type="submit" className="btn btn-sm text-xs">Logout</button>
+            </form>
+        </div>
+    )
+}
+
+function UnauthorizedNav() {
+    return (
+        <div className="navbar-end gap-5">
+            <Link href="/auth/login" className="btn">Login</Link>
+            <Link href="/auth/register" className="btn">Registrasi</Link>
         </div>
     )
 }

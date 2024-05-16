@@ -6,9 +6,14 @@ export async function handleUserCreateSong(formData: FormData) {
     const songtitle = formData.get("songtitle")! as string;
     const albumId = formData.get("album")! as string;
     const artistId = formData.get("artist")! as string;
-    const genre = formData.get("genre")! as string;
+    const genre = formData.getAll("genre")! as string[];
     const songwriterId = formData.get("songwriter")! as string;
     const duration = formData.get("duration")! as string;
+
+    console.log(albumId);
+    console.log(formData);
+
+    console.log(genre);
 
     const contentId = uuid();
 
@@ -19,22 +24,22 @@ export async function handleUserCreateSong(formData: FormData) {
 
     await sql`
         INSERT INTO SONG(id_konten, id_artist, id_album, total_play, total_download)
-        VALUES (${contentId}, ${artistId}, '6496aa56-9f5d-4bda-ae71-b9a8e2f14b84', 0, 0);
+        VALUES (${contentId}, ${artistId}, ${albumId}, 0, 0);
     `;
 
-    //yang ini masih belum tau caranya ngoper album nya gimana soalnya harus
-    //refer dari page sebelumnya
     await sql`
     UPDATE ALBUM
     SET jumlah_lagu = jumlah_lagu + 1
-    WHERE id = '6496aa56-9f5d-4bda-ae71-b9a8e2f14b84';
+    WHERE id = ${albumId};
 `;
 
-    //gatau ini perlu atau ga
-    await sql`
-        INSERT INTO GENRE (id_konten, genre)
-        VALUES (${contentId}, ${genre});
-    `;
+ for (const g of genre){
+     await sql`
+         INSERT INTO GENRE (id_konten, genre)
+         VALUES (${contentId}, ${g});
+     `;
+ }
+
 
     await sql`INSERT INTO SONGWRITER_WRITE_SONG (id_songwriter, id_song)
     VALUES (${songwriterId}, ${contentId})
