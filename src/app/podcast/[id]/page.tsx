@@ -1,8 +1,10 @@
-'use client';
-
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function PlayPodcastPage() {
+    const router = useRouter();
+    const id: string = router.query.id! as string
+
     return (
         <div className="flex justify-center">
             <div className="w-1/2 border border-white py-5">
