@@ -12,7 +12,6 @@ const dateTimeFormat = new Intl.DateTimeFormat("id-ID", {
 export default async function Home() {
   const user = await checkUser();
   const isLoggedIn = user !== null;
-  console.log(isLoggedIn)
   return (
     <div className="flex justify-center items-center">
       {isLoggedIn ? <Dashboard /> : <UnauthorizedHome />}
@@ -35,8 +34,10 @@ function UnauthorizedHome() {
 }
 async function Dashboard() {
   const user = await checkUser();
-  const userInfo = (await sql`
+  const userInfo = !user!.roles.includes("LABEL") ? (await sql`
   SELECT * FROM akun WHERE email = ${user!.email}
+  `).rows[0] : (await sql`
+  SELECT * FROM label WHERE email = ${user!.email}
   `).rows[0];
 
   const roles = user!.roles;

@@ -5,7 +5,6 @@ import { redirect } from "next/navigation"
 import { Role } from "./checkRole"
 
 export async function checkUser() {
-
     const email = cookies().get("email")?.value
     if (!email) {
         return null;
