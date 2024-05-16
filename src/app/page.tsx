@@ -1,11 +1,18 @@
-import { Inter } from "next/font/google";
-import { GetServerSideProps } from "next";
+"use server";
+
+import { checkUser } from "@/action/checkUser";
 import Link from "next/link";
+import { sql } from "@vercel/postgres";
+const dateTimeFormat = new Intl.DateTimeFormat("id-ID", {
+  year: "numeric",
+  month: "long",
+  day: "2-digit",
+});
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home() {
-  const isLoggedIn = true;
+export default async function Home() {
+  const user = await checkUser();
+  const isLoggedIn = user !== null;
+  console.log(isLoggedIn)
   return (
     <div className="flex justify-center items-center">
       {isLoggedIn ? <Dashboard /> : <UnauthorizedHome />}
@@ -26,25 +33,30 @@ function UnauthorizedHome() {
     </div>
   )
 }
-function Dashboard() {
-  const roles = ["Pengguna Biasa"];
-  const isLabel = roles.includes("Label");
+async function Dashboard() {
+  const user = await checkUser();
+  const userInfo = (await sql`
+  SELECT * FROM akun WHERE email = ${user!.email}
+  `).rows[0];
+
+  const roles = user!.roles;
+  const isLabel = roles.includes("LABEL");
   return (
     <div className="card w-96 bg-base-100 shadow-xl">
       <div className="card-body items-center">
         <h1 className="card-title text-center mb-5">Dashboard</h1>
         <div className="card-actions w-full gap-y-3 justify-start flex-col">
-          <p>Nama: Pengguna 1</p>
-          <p>Email: pengguna1@email.com</p>
-          {isLabel && <p>Kontak: 085233445544</p>}
-          {!isLabel && <p>Kota Asal: Depok</p>}
-          {!isLabel && <p>Gender: Laki-Laki</p>}
-          {!isLabel && <p>Tempat Lahir: Pekanbaru</p>}
-          {!isLabel && <p>Tanggal Lahir: 6 September 2002</p>}
+          <p>Nama: {userInfo.nama}</p>
+          <p>Email: {userInfo.email}</p>
+          {isLabel && <p>Kontak: {userInfo.kontak}</p>}
+          {!isLabel && <p>Kota Asal: {userInfo.kota_asal}</p>}
+          {!isLabel && <p>Gender: {userInfo.gender === 1 ? "Laki-Laki" : "Perempuan"}</p>}
+          {!isLabel && <p>Tempat Lahir: {userInfo.tempat_lahir}</p>}
+          {!isLabel && <p>Tanggal Lahir: {dateTimeFormat.format(userInfo.tanggal_lahir)}</p>}
           {!isLabel && <p>Role: {roles.join(", ")}</p>}
           {!isLabel && <Playlist />}
-          {roles.includes("Songwriter") && <Songs />}
-          {roles.includes("Podcaster") && <Podcast />}
+          {roles.includes("SONGWRITER") && <Songs />}
+          {roles.includes("PODCASTER") && <Podcast />}
           {isLabel && <Album />}
         </div>
       </div>
