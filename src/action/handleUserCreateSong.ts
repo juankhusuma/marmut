@@ -1,6 +1,7 @@
 "use server";
 import { sql } from "@vercel/postgres";
 import { uuid } from "@/utils/uuid";
+import { redirect } from "next/navigation";
 
 export async function handleUserCreateSong(formData: FormData) {
     const songtitle = formData.get("songtitle")! as string;
@@ -39,6 +40,8 @@ export async function handleUserCreateSong(formData: FormData) {
      VALUES (${s}, ${contentId})
      `;
  }
+
+ redirect('/')
 
     
 }
