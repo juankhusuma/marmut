@@ -1,6 +1,7 @@
 "use server";
 import { sql } from "@vercel/postgres";
 import { uuid } from "@/utils/uuid";
+import { redirect } from "next/navigation";
 
 export async function handleUserCreateAlbum(formData: FormData) {
     const albumtitle = formData.get("albumtitle")! as string;
@@ -29,12 +30,6 @@ export async function handleUserCreateAlbum(formData: FormData) {
         VALUES (${contentId}, ${artistId}, ${albumId}, 0, 0);
     `;
 
-    await sql`
-    UPDATE ALBUM
-    SET jumlah_lagu = jumlah_lagu + 1
-    WHERE id = ${albumId};
-`;
-
     for (const g of genre){
         await sql`
             INSERT INTO GENRE (id_konten, genre)
@@ -47,5 +42,7 @@ export async function handleUserCreateAlbum(formData: FormData) {
         VALUES (${s}, ${contentId})
         `;
     }
+
+    redirect('/')
     
 }

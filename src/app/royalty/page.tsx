@@ -42,6 +42,7 @@ export default async function RoyaltyPage() {
     JOIN konten k ON s.id_konten = k.id
     JOIN album a ON s.id_album = a.id
     JOIN songwriter so ON s.id_artist = so.id
+    JOIN label la on la.id = al.id_label
     LEFT JOIN pemilik_hak_cipta phc ON so.id_pemilik_hak_cipta = phc.id
     WHERE so.email_akun = ${user?.email}
     `;

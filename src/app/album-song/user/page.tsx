@@ -11,6 +11,8 @@ export default async function AlbumListUser() {
 
   const user = await checkUser();
   const isLabel = user?.roles.includes("LABEL");
+  const isArtist = user?.roles.includes("ARTIST");
+  const isSongwriter = user?.roles.includes("SONGWRITER");
 
   if (isLabel) {
     return (
@@ -23,11 +25,28 @@ export default async function AlbumListUser() {
     );
   }
 
-  const result = await sql`
-    SELECT id, judul, jumlah_lagu, total_durasi
-    FROM album
-  `;
-  const album = result.rows;
+  let albums : any;
+
+  if (isArtist){
+    const result = await sql`
+    SELECT al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join artist a on s.id_artist = a.id
+    join album al on al.id = s.id_album join label la on la.id = al.id_label
+    WHERE a.email_akun = ${user?.email}
+    group by (al.judul, la.nama, al.jumlah_lagu, al.total_durasi)
+    `;
+    albums = result.rows;
+  }
+
+  if(isSongwriter){
+    const result = await sql`
+    SELECT al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join songwriter_write_song sow on sow.id_song = s.id_konten
+    join songwriter so on sow.id_songwriter = so.id
+    join album al on al.id = s.id_album join label la on la.id = al.id_label
+    WHERE so.email_akun = ${user?.email}
+    group by (al.judul, la.nama, al.jumlah_lagu, al.total_durasi)
+    `;
+    albums = result.rows;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -44,6 +63,9 @@ export default async function AlbumListUser() {
                     Judul
                   </th>
                   <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
+                    Label
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                     Jumlah Lagu
                   </th>
                   <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
@@ -55,9 +77,10 @@ export default async function AlbumListUser() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200 text-center">
-                {album.map((album) => (
+                {albums?.map((album : any) => (
                   <tr key={album.id}>
                     <td className="px-6 py-4 whitespace-nowrap">{album.judul}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{album.nama}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{album.jumlah_lagu}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{album.total_durasi}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
