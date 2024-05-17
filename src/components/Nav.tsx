@@ -43,7 +43,7 @@ async function AuthorizedNav() {
     const isLabel = roles.includes("LABEL");
     const isPremium = roles.includes("PREMIUM") && !isLabel;
     const isPodcaster = roles.includes("PODCASTER") && !isLabel;
-    const isArtist = roles.includes("ARTIST") && !isLabel;
+    const isArtist = (roles.includes("ARTIST") || roles.includes("SONGWRITER")) && !isLabel;
     return (
         <div className="navbar-end gap-2">
             <Link href="/" className="btn btn-sm text-xs">Dashboard</Link>
@@ -55,7 +55,7 @@ async function AuthorizedNav() {
             {!isLabel && <Link href="/playlist/kelolapl" className="btn btn-sm text-xs">Kelola Playlist</Link>}
             {!isLabel && <Link href="/playlist/kelolapl" className="btn btn-sm text-xs">Langganan Paket</Link>}
             {isPremium && <Link href="/downloaded-songs" className="btn btn-sm text-xs">Kelola Downloads & Songs</Link>}
-            {isPodcaster && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Podcast</Link>}
+            {isPodcaster && <Link href="/podcast/create" className="btn btn-sm text-xs">Kelola Podcast</Link>}
             {isArtist && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album & Songs</Link>}
             {isLabel && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album</Link>}
             {(isLabel || isArtist) && <Link href="/playlist/list" className="btn btn-sm text-xs">Cek Royalti</Link>}
