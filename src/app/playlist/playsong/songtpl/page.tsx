@@ -4,6 +4,7 @@ import { handleAddSong, handleSongDetails, handleUserPL } from "@/action/handleU
 import { triggerToast } from "@/utils/toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import addsongtopl from "../../kelolapl/addsong/page";
 
 type music = {
     judul_music: string
@@ -78,42 +79,17 @@ export default function songtopl() {
         },
         [searchParams]
     )
-
-    async function addSongtoPlaylist( value: string, id_konten: string, judul_album: string, judul_music: string) {
-        if (value != "b") {
-            handleAddSong(id_konten, value).then(res => {
-                if (res == 'failed') {
-                    triggerToast("error", "Adding Song failure!");
-                    setTimeout(() => {
-                        return;
-                    }, 2000)
-                } else {
-                    triggerToast("success", "Song has successfull added!");
-                    setTimeout(() => {
-                        router.push(pathname + `/../successadd` + `?` + createQueryString2(['judul_music', 'judul_album'],[judul_music, judul_album]));
-                    }, 2000);
-                }
-            });
-        } else {
-            triggerToast("error", "No Playlist selected!");
-            setTimeout(() => {
-                return;
-            }, 2000)
-        }
-    }
     
     return (
         <div className="container mx-auto p-4">
-            <form className="max-w-sm mx-auto" onSubmit={ () => addSongtoPlaylist(value, id_konten!, dataMusic?.judul_music!, dataMusic?.judul_album!)}>
+            <form className="max-w-sm mx-auto" action={handleAddSong}>
             <h1 className="text-2xl font-bold mb-2">Add Song to User Playlist</h1>
             <h1 className="text-1xl font-normal mb-2">Judul: {dataMusic?.judul_music}</h1>
             <h1 className="text-1xl font-normal mb-4">Artist: {dataMusic?.nama_artist}</h1>
-            <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={value} onChange={(e) => {
-                setValue(e.target.value);
-            }}>
-                <option defaultValue={"b"}>Choose a song</option>
+            <select id="id" name="id" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="" disabled selected>Choose a playlist</option>
                 {dataPL?.map((row, index) => (
-                    <option key={index} value={row.id_playlist}>{row.judul}</option>
+                    <option key={index} value={row.id_playlist + '-' + row.id_user_playlist}>{row.judul}</option>
                 ))}
             </select>
             <div className="flex justify-center mt-32">
@@ -125,6 +101,10 @@ export default function songtopl() {
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Kembali
                 </button>
+            </div>
+            <div className="invisible">
+                <label htmlFor="id_playlist"></label>
+                <input name="song" id="song" type="text" value={dataMusic?.id_konten}></input>
             </div>
             </form>
         </div>

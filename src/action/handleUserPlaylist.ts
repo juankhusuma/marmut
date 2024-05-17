@@ -1,7 +1,9 @@
 "use server";
 
+import { triggerToast } from "@/utils/toast";
 import { sql } from "@vercel/postgres";
 import { UUID, randomUUID } from "crypto";
+import { redirect } from "next/navigation"
 
 // Select Section
 
@@ -161,17 +163,29 @@ export async function handleChangePlaylist(formData: FormData) {
 
 // Insert Section
 
-export async function handleAddSong( id_konten: string | null, id_playlist: string | null) {
+export async function handleAddSong(formData: FormData) {
+    const id_konten = formData.get("song")! as string;
+    var id_playlist;
+    var id_user_playlist;
+    if (formData.has("id")) {
+        const id = formData.get("id")! as string;
+        id_playlist = id.split('-')[0];
+        id_user_playlist = id.split('-')[1];
+    } else {
+        id_playlist = formData.get("id_playlist")! as string;
+        id_user_playlist = formData.get("id_user_playlist")! as string;
+    }
+
     try {
         await sql`
         INSERT INTO PLAYLIST_SONG (id_playlist, id_song) VALUES (${id_playlist}, ${id_konten})
         `
+        console.log('addsongsuccess');
     } catch {
         console.log('addsongfailed');
-        return 'failed';
     }
-    console.log('addsongsuccess');
-    return 'success';
+    redirect('/playlist/kelolapl/playlistdetail?id_user_playlist='+ id_user_playlist +'&id_playlist=' + id_playlist)
+
 }
 
 export async function handleAddPlaylist(formData: FormData) {
@@ -191,7 +205,7 @@ export async function handleAddPlaylist(formData: FormData) {
     `;
 }
 
-export async function handleAddDownloadedSong(email: string, id_song: string) {
+export async function handleAddDownloadedSong(email: string, id_song: string) { 
     await sql`
     INSERT INTO DOWNLOADED_SONG (id_song, email_downloader) VALUES (${id_song}, ${email})
     `;

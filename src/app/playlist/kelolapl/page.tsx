@@ -63,7 +63,7 @@ export default function kelolapl() {
         [searchParams]
     )
 
-    async function handleClickDetail( id_user_playlist:string, id_playlist:UUID ) {
+    async function handleClickDetail( id_user_playlist:string, id_playlist: string ) {
         router.push(pathname + `/playlistdetail` + `?` + createQueryString2(['id_user_playlist', 'id_playlist'], [id_user_playlist, id_playlist]))
     }
 
