@@ -27,12 +27,6 @@ export async function handleUserCreateSong(formData: FormData) {
         VALUES (${contentId}, ${artistId}, ${albumId}, 0, 0);
     `;
 
-    await sql`
-    UPDATE ALBUM
-    SET jumlah_lagu = jumlah_lagu + 1
-    WHERE id = ${albumId};
-`;
-
  for (const g of genre){
      await sql`
          INSERT INTO GENRE (id_konten, genre)
