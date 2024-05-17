@@ -15,7 +15,7 @@ export async function handleCreatePodcast(formData: FormData) {
 
     await sql`
     INSERT INTO konten(id, judul, durasi, tahun, tanggal_rilis)
-    VALUES (${id}, ${judul}, ${durasi}, ${new Date().getFullYear()}, ${new Date().toISOString()})
+    VALUES (${id}, ${judul}, 0, ${new Date().getFullYear()}, ${new Date().toISOString()})
     `
 
     await sql`

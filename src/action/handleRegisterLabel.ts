@@ -1,11 +1,15 @@
+"use server"
+
 import { uuid } from "@/utils/uuid";
 import { sql } from "@vercel/postgres";
+import { redirect } from "next/navigation";
 
 export async function handleRegisterLabel(formData: FormData) {
     const { rowCount } = await sql`
     SELECT 1 FROM LABEL WHERE email = ${formData.get("email")! as string}`;
     if (rowCount == 1) {
-        throw new Error("Email already registered");
+        console.log("Email sudah terdaftar")
+        redirect("/auth/register/label")
     }
 
     const { rows } = await sql`
@@ -27,7 +31,11 @@ export async function handleRegisterLabel(formData: FormData) {
             ${pemilikHakCiptaId}
         )`;
     } catch (error) {
+        console.log(error)
         await sql`DELETE FROM PEMILIK_HAK_CIPTA WHERE id = ${pemilikHakCiptaId}`;
-        throw error;
+        redirect("/auth/register/label")
     }
+
+    redirect("/auth/login")
+
 }

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { sql } from "@vercel/postgres";
 import {unstable_noStore as noStore} from 'next/cache'
+import {handleDeleteAlbum} from "@/action/handleDeleteAlbum";
 
 
 export default async function AlbumListUser() {
@@ -44,7 +45,7 @@ export default async function AlbumListUser() {
                     <td className="px-6 py-4 whitespace-nowrap">{album.jumlah_lagu}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{album.total_durasi}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <Link href={`/album-song/user/albumdetails/${album.judul}`}>
+                      <Link href={`/album-song/user/${album.id}`}>
                         <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
                           Lihat Daftar Lagu
                         </button>
@@ -54,7 +55,12 @@ export default async function AlbumListUser() {
                           Tambah Lagu
                         </button>
                       </Link>
-                      <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
+                      <form action ={handleDeleteAlbum}>
+                        <input type = "hidden" name = "id" value = {album.id} />
+                      <button type = "submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                        Hapus
+                    </button>
+                      </form>
                     </td>
                   </tr>
                 ))}
