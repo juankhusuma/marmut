@@ -13,7 +13,7 @@ export default async function RoyaltyPage() {
 
   let result;
   
-  if (isArtist){
+  if (isArtist) {
     result = await sql`SELECT
     k.judul AS judul_lagu,
     a.judul AS judul_album,
@@ -30,7 +30,7 @@ export default async function RoyaltyPage() {
     `;
   }
 
-  else if (isSongwriter){
+  else if (isSongwriter) {
     result = await sql`SELECT
     k.judul AS judul_lagu,
     a.judul AS judul_album,
@@ -47,7 +47,7 @@ export default async function RoyaltyPage() {
     `;
   }
 
-  else if (isLabel){
+  else if (isLabel) {
     result = await sql`SELECT
     k.judul AS judul_lagu,
     a.judul AS judul_album,
@@ -58,8 +58,8 @@ export default async function RoyaltyPage() {
     song s
     JOIN konten k ON s.id_konten = k.id
     JOIN album a ON s.id_album = a.id
-    JOIN label so ON s.id_artist = la.id
-    LEFT JOIN pemilik_hak_cipta phc ON la.id_pemilik_hak_cipta = phc.id;
+    JOIN label la ON s.id_artist = la.id
+    LEFT JOIN pemilik_hak_cipta phc ON la.id_pemilik_hak_cipta = phc.id
     WHERE la.email = ${user?.email}
     `;
   }
@@ -78,8 +78,6 @@ export default async function RoyaltyPage() {
     style: 'currency',
     currency: 'IDR',
   });
-
-
 
   return (
     <div className="p-10 flex justify-center">

@@ -2,15 +2,31 @@
 
 import Link from 'next/link';
 import { sql } from "@vercel/postgres";
-import {unstable_noStore as noStore} from 'next/cache'
-import {handleDeleteAlbum} from "@/action/handleDeleteAlbum";
-
+import { unstable_noStore as noStore } from 'next/cache';
+import { handleDeleteAlbum } from "@/action/handleDeleteAlbum";
+import { checkUser } from "@/action/checkUser";
 
 export default async function AlbumListUser() {
-
   noStore();
-  const result = await sql `SELECT id, judul, jumlah_lagu, total_durasi
-  from album`;
+
+  const user = await checkUser();
+  const isLabel = user?.roles.includes("LABEL");
+
+  if (isLabel) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="bg-white p-6 rounded-lg shadow-lg text-gray-900 max-w-md w-full">
+          <h3 className="text-lg font-semibold text-center mb-4">Access Denied</h3>
+          <p className="text-center">You are not allowed to access this page!</p>
+        </div>
+      </div>
+    );
+  }
+
+  const result = await sql`
+    SELECT id, judul, jumlah_lagu, total_durasi
+    FROM album
+  `;
   const album = result.rows;
 
   return (
@@ -55,11 +71,11 @@ export default async function AlbumListUser() {
                           Tambah Lagu
                         </button>
                       </Link>
-                      <form action ={handleDeleteAlbum}>
-                        <input type = "hidden" name = "id" value = {album.id} />
-                      <button type = "submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
-                        Hapus
-                    </button>
+                      <form action={handleDeleteAlbum}>
+                        <input type="hidden" name="id" value={album.id} />
+                        <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                          Hapus
+                        </button>
                       </form>
                     </td>
                   </tr>

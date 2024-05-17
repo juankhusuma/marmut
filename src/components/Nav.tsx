@@ -58,7 +58,7 @@ async function AuthorizedNav() {
             {isPodcaster && <Link href="/podcast/create" className="btn btn-sm text-xs">Kelola Podcast</Link>}
             {isArtist && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album & Songs</Link>}
             {isLabel && <Link href="/playlist/list" className="btn btn-sm text-xs">Kelola Album</Link>}
-            {(isLabel || isArtist) && <Link href="/playlist/list" className="btn btn-sm text-xs">Cek Royalti</Link>}
+            {(isLabel || isArtist) && <Link href="/royalty" className="btn btn-sm text-xs">Cek Royalti</Link>}
             <form action={handleUserLogout}>
                 <button type="submit" className="btn btn-sm text-xs">Logout</button>
             </form>
