@@ -75,7 +75,7 @@ export async function handleSongDetails( id_konten: string | null) {
         SONG.total_download AS total_download, 
         ALBUM.judul AS judul_album,
         SONG.id_konten AS id_konten
-    FROM 
+    FROM
         SONG
     INNER JOIN 
         KONTEN ON SONG.id_konten = KONTEN.id
@@ -244,20 +244,5 @@ export async function handleEntryAkunPlayPlaylist( email:string, id_user_playlis
     const timestamp = new Date().toISOString();
     await sql`
     INSERT INTO AKUN_PLAY_USER_PLAYLIST (email_pemain, id_user_playlist, email_pembuat, waktu) VALUES (${email}, ${id_user_playlist}, ${email_pembuat.rows[0].email_pembuat}, ${timestamp})
-    `;
-}
-
-// Exist Section
-
-export async function isDownloaded(email: string, id_song: string) {
-    return sql`
-    SELECT EXISTS (
-        SELECT
-            * 
-        FROM 
-            DOWNLOADED_SONG
-        WHERE
-            id_song = ${id_song} AND email_downloader = ${email}
-    )
     `;
 }
