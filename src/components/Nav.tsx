@@ -3,6 +3,7 @@
 import { checkUser } from "@/action/checkUser";
 import { handleUserLogout } from "@/action/handleUserLogout";
 import Link from "next/link";
+import LogoutButton from "./Logout";
 
 export default async function Nav() {
     const user = await checkUser();
@@ -59,9 +60,7 @@ async function AuthorizedNav() {
             {isArtist && <Link href="/album-song/user" className="btn btn-sm text-xs">Kelola Album & Songs</Link>}
             {isLabel && <Link href="/album-song/label" className="btn btn-sm text-xs">Kelola Album</Link>}
             {(isLabel || isArtist) && <Link href="/royalty" className="btn btn-sm text-xs">Cek Royalti</Link>}
-            <form action={handleUserLogout}>
-                <button type="submit" className="btn btn-sm text-xs">Logout</button>
-            </form>
+            <LogoutButton />
         </div>
     )
 }
