@@ -56,29 +56,6 @@ export default function songtopl() {
             }
         })
     },[])
-
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-          const params = new URLSearchParams()
-          params.set(name, value)
-     
-          return params.toString()
-        },
-        [searchParams]
-    )
-
-    const createQueryString2 = useCallback(
-        (name: Array<string>, value: Array<string>) => {
-          const params = new URLSearchParams()
-          params.set(name[0], value[0])
-          for (let index = 1; index < name.length; index++) {
-            params.append(name[index], value[index])
-          }
-     
-          return params.toString()
-        },
-        [searchParams]
-    )
     
     return (
         <div className="container mx-auto p-4">
@@ -87,9 +64,9 @@ export default function songtopl() {
             <h1 className="text-1xl font-normal mb-2">Judul: {dataMusic?.judul_music}</h1>
             <h1 className="text-1xl font-normal mb-4">Artist: {dataMusic?.nama_artist}</h1>
             <select id="id" name="id" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="" disabled selected>Choose a playlist</option>
+                <option id="id" value="" disabled selected>Choose a playlist</option>
                 {dataPL?.map((row, index) => (
-                    <option key={index} value={row.id_playlist + '-' + row.id_user_playlist}>{row.judul}</option>
+                    <option key={index} value={row.id_playlist + '_' + row.id_user_playlist}>{row.judul}</option>
                 ))}
             </select>
             <div className="flex justify-center mt-32">
@@ -98,7 +75,9 @@ export default function songtopl() {
                 </button>
             </div>
             <div className="flex justify-center mt-1">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button type="button" onClick={() => {
+                    router.push(pathname + `/../` + `?` + 'id_konten=' + id_konten);
+                }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Kembali
                 </button>
             </div>

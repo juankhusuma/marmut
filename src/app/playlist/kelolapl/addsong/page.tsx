@@ -56,29 +56,6 @@ export default function addsongtopl() {
         },
         [searchParams]
     )
-
-    // async function addSongtoPlaylist(e: FormEvent<HTMLFormElement>) {
-    //     e.preventDefault();
-    //     const formData = new FormData(e.target as HTMLFormElement);
-    //     formData.append('id_playlist', id_playlist!);
-    //     if (value != "b") {
-    //         handleAddSong(formData).then(res => {
-    //             if (res == 'failed') {
-    //                 triggerToast('error', 'Failed to Add Song!');
-    //             } else {
-    //                 triggerToast('success', 'Add Song Success!');
-    //                 setTimeout(() => {
-    //                     router.push(pathname + `/../playlistdetail` + `?` + createQueryString2(['id_playlist', 'id_user_playlist'], [id_playlist!, id_user_playlist!]));
-    //                 }, 2000);
-    //             }
-    //         });
-    //     } else {
-    //         triggerToast('error', 'No Song Selected');
-    //         setTimeout(() => {
-    //             return;
-    //         }, 2000)
-    //     }
-    // }
     
     return (
         <form className="flex flex-col space-y-2 justify-items-center items-center" action={handleAddSong}>

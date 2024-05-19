@@ -2,6 +2,8 @@
 
 import { triggerToast } from "@/utils/toast";
 import { sql } from "@vercel/postgres";
+import { timeStamp } from "console";
+import exp from "constants";
 import { UUID, randomUUID } from "crypto";
 import { redirect } from "next/navigation"
 
@@ -36,7 +38,7 @@ export async function handleSongPlaylist( id_playlist: string | null) {
     JOIN PLAYLIST_SONG ON SONG.id_konten = PLAYLIST_SONG.id_song
     WHERE PLAYLIST_SONG.id_playlist = ${id_playlist}
     ORDER BY KONTEN.judul ASC
-    `
+    `;
     return data;
 }
 
@@ -133,10 +135,18 @@ export async function handleSongWriter(id_konten: string | null) {
 
 // Delete Section
 
-export async function handleDeletePlaylist(id_user_playlist: UUID | null) {
+export async function handleDeletePlaylist(id_user_playlist: string | null, id_playlist: string | null) {
     await sql`
     DELETE FROM USER_PLAYLIST
     WHERE id_user_playlist = ${id_user_playlist}
+    `;
+    await sql`
+    DELETE FROM PLAYLIST_SONG
+    WHERE id_playlist = ${id_playlist}
+    `;
+    await sql`
+    DELETE FROM PLAYLIST
+    WHERE id = ${id_playlist}
     `;
 }
 
@@ -161,16 +171,25 @@ export async function handleChangePlaylist(formData: FormData) {
     `;
 }
 
+export async function handleUpdateTotalPlaySong( id_konten: string ) {
+    await sql`
+    UPDATE SONG
+    SET total_play = total_play + 1
+    WHERE id_konten = ${id_konten}
+    `;
+}
+
 // Insert Section
 
-export async function handleAddSong(formData: FormData) {
+export async function   handleAddSong(formData: FormData) {
     const id_konten = formData.get("song")! as string;
     var id_playlist;
     var id_user_playlist;
+    var submit;
     if (formData.has("id")) {
         const id = formData.get("id")! as string;
-        id_playlist = id.split('-')[0];
-        id_user_playlist = id.split('-')[1];
+        id_playlist = id.split('_')[0];
+        id_user_playlist = id.split('_')[1];
     } else {
         id_playlist = formData.get("id_playlist")! as string;
         id_user_playlist = formData.get("id_user_playlist")! as string;
@@ -181,16 +200,21 @@ export async function handleAddSong(formData: FormData) {
         INSERT INTO PLAYLIST_SONG (id_playlist, id_song) VALUES (${id_playlist}, ${id_konten})
         `
         console.log('addsongsuccess');
+        submit = "success";
     } catch {
         console.log('addsongfailed');
+        submit = "error";
     }
-    redirect('/playlist/kelolapl/playlistdetail?id_user_playlist='+ id_user_playlist +'&id_playlist=' + id_playlist)
+    redirect('/playlist/kelolapl/playlistdetail?id_user_playlist='+ id_user_playlist +'&id_playlist=' + id_playlist + '&submit=' + submit)
 
 }
 
 export async function handleAddPlaylist(formData: FormData) {
     const judul = formData.get("judul")! as string;
     const deskripsi = formData.get("deskripsi")! as string;
+    if (judul == "" || deskripsi == "") {
+        throw new Error('Kolom judul / Deskrispi kosong')
+    }
     const email = formData.get("email")! as string;
     const date = new Date().toISOString().split('T')[0];
 
@@ -203,11 +227,23 @@ export async function handleAddPlaylist(formData: FormData) {
     INSERT INTO USER_PLAYLIST (email_pembuat, id_user_playlist, judul, deskripsi, jumlah_lagu, tanggal_dibuat, id_playlist, total_durasi)
     VALUES (${email}, ${id2}, ${judul}, ${deskripsi}, 0, ${date}, ${id}, 0)
     `;
+    console.log('Add Playlist Success')
 }
 
 export async function handleAddDownloadedSong(email: string, id_song: string) { 
     await sql`
     INSERT INTO DOWNLOADED_SONG (id_song, email_downloader) VALUES (${id_song}, ${email})
+    `;
+}
+
+export async function handleEntryAkunPlayPlaylist( email:string, id_user_playlist:string) {
+    const email_pembuat = await sql`
+    SELECT email_pembuat FROM user_playlist
+    WHERE id_user_playlist = ${id_user_playlist}
+    `;
+    const timestamp = new Date().toISOString();
+    await sql`
+    INSERT INTO AKUN_PLAY_USER_PLAYLIST (email_pemain, id_user_playlist, email_pembuat, waktu) VALUES (${email}, ${id_user_playlist}, ${email_pembuat.rows[0].email_pembuat}, ${timestamp})
     `;
 }
 

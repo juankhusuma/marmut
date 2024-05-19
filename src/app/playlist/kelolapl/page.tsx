@@ -3,18 +3,17 @@
 import { handleUserPL } from "@/action/handleUserPlaylist";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { UUID } from "crypto";
 import { handleDeletePlaylist } from "@/action/handleUserPlaylist";
 import { triggerToast } from "@/utils/toast";
 
 type user_playlist = {
     email_pembuat: string
-    id_user_playlist: UUID
+    id_user_playlist: string
     judul: string
     deskripsi: string
     jumlah_lagu: number
     tanggal_dibuat: Date
-    id_playlist: UUID
+    id_playlist: string
     total_durasi: number
 }
 
@@ -71,9 +70,9 @@ export default function kelolapl() {
         router.push(pathname + `/changeplaylist` + `?` + createQueryString('id_user_playlist', id_user_playlist))
     }
 
-    async function handleClickDelete( id_user_playlist:UUID ) {
+    async function handleClickDelete( id_user_playlist:string, id_playlist:string  ) {
         try {
-            await handleDeletePlaylist(id_user_playlist);
+            await handleDeletePlaylist(id_user_playlist, id_playlist);
         } catch {
             triggerToast("error", "Delete Playlist failure!");
             return;
@@ -82,6 +81,10 @@ export default function kelolapl() {
         setTimeout(() => {
             window.location.reload();
         }, 2000);
+    }
+
+    function durasiToHourMinutes( durasi:number ){
+        return ((durasi-(durasi%60))/60) + ' Hour ' + (durasi%60) + ' Minutes';
     }
 
     if (data != null) {
@@ -107,7 +110,7 @@ export default function kelolapl() {
                                 <tr key={index} className="bg-black-200">
                                     <td className="border px-4 py-2">{row.judul}</td>
                                     <td className="border px-4 py-2">{row.jumlah_lagu}</td>
-                                    <td className="border px-4 py-2">{row.total_durasi} Minutes</td>
+                                    <td className="border px-4 py-2">{durasiToHourMinutes(row.total_durasi)}</td>
                                     <td className="border px-4 py-2 flex flex-col space-y-2">
                                         <button className="hover:bg-gray-800 py-2 px-4 border border-gray-400 rounded shadow" onClick={ () => handleClickDetail(row.id_user_playlist, row.id_playlist)}>
                                             Detail
@@ -115,7 +118,7 @@ export default function kelolapl() {
                                         <button className="hover:bg-gray-800 py-2 px-4 border border-gray-400 rounded shadow" onClick={ () => handleClickChange(row.id_user_playlist)}>
                                             Ubah
                                         </button>
-                                        <button className="hover:bg-gray-800 py-2 px-4 border border-gray-400 rounded shadow" onClick={ () => handleClickDelete(row.id_user_playlist) }>
+                                        <button className="hover:bg-gray-800 py-2 px-4 border border-gray-400 rounded shadow" onClick={ () => handleClickDelete(row.id_user_playlist, row.id_playlist) }>
                                             Hapus
                                         </button></td>
                                 </tr>

@@ -1,6 +1,6 @@
 'use client';
 
-import { handlePlaylistDTL, handleSongPlaylist } from "@/action/handleUserPlaylist";
+import { handleEntryAkunPlayPlaylist, handlePlaylistDTL, handleSongPlaylist } from "@/action/handleUserPlaylist";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -28,6 +28,10 @@ export default function ViewPlayListPage() {
     const id_playlist = searchParams.get('id_playlist')! as string;
     const [data, setData] = useState<playlist>();
     const [datamusic, setDatamusic] = useState<Array<song>>();
+
+    if (typeof window !== 'undefined') {
+        var emailuser = localStorage.getItem("email");
+    }
 
     useEffect(() => {
         handlePlaylistDTL(id_user_playlist).then(res => {
@@ -70,7 +74,15 @@ export default function ViewPlayListPage() {
     )
 
     async function handleClickMusic( id_konten: string ) {
-        router.push(pathname + `/../../playsong` + `?` + createQueryString('id_konten', id_konten));
+        router.push(pathname + `/../playsong` + `?` + createQueryString('id_konten', id_konten));
+    }
+
+    async function handleShufflePlay() {
+        handleEntryAkunPlayPlaylist(emailuser!, id_user_playlist)
+    }
+
+    function durasiToHourMinutes( durasi:number ){
+        return ((durasi-(durasi%60))/60) + ' Hour ' + (durasi%60) + ' Minutes';
     }
     
     return (
@@ -80,12 +92,12 @@ export default function ViewPlayListPage() {
                 <p>Judul: {data?.judul}</p>
                 <p>Pembuat: {data?.nama_pembuat}</p>
                 <p>Jumlah lagu: {data?.jumlah_lagu}</p>
-                <p>Total Durasi: {data?.total_durasi}</p>
-                <p>Tanggal Dibuat: {data?.tanggal_dibuat.toString()}</p>
+                <p>Total Durasi: {durasiToHourMinutes(data?.total_durasi!)}</p>
+                <p>Tanggal Dibuat: {data?.tanggal_dibuat.toString().split('T')[0]}</p>
                 <p>Deskripsi: {data?.deskripsi}</p>
             </div>
-            <a href="#" className="text-center">Shuffle Play</a>
-            <a href="#" className="text-center">Kembali</a>
+            <a onClick={handleShufflePlay} className="text-center">Shuffle Play</a>
+            <a onClick={() => {router.back()}} className="text-center">Kembali</a>
             <h1 className="text-center">Daftar Lagu</h1>
             <div className="overflow-y-auto h-96">
                 <table className="table table-zebra table-auto w-full">
@@ -102,11 +114,11 @@ export default function ViewPlayListPage() {
                             <tr key={index} className="bg-black-200">
                                 <th className="border px-4 py-2">{row.judul}</th>
                                 <th className="border px-4 py-2">{row.nama}</th>
-                                <th className="border px-4 py-2">{row.durasi}</th>
+                                <th className="border px-4 py-2">{durasiToHourMinutes(row.durasi)}</th>
                                 <th className="border px-4 py-2">
                                 <div className="flex flex-col">
                                     <a onClick={ () => handleClickMusic(row.id_konten)}>[Lihat]</a>
-                                    <a>[Play]</a>
+                                    <a onClick={ () => handleClickMusic(row.id_konten)}>[Play]</a>
                                 </div>
                             </th>
                             </tr>

@@ -2,9 +2,9 @@
 
 import { Role } from "@/action/checkRole";
 import { checkUser } from "@/action/checkUser";
-import { handleSongWriter, handleAddDownloadedSong, handleSongDetails, handleSongGenre, isDownloaded } from "@/action/handleUserPlaylist";
+import { handleSongWriter, handleAddDownloadedSong, handleSongDetails, handleSongGenre, isDownloaded, handleUpdateTotalPlaySong } from "@/action/handleUserPlaylist";
 import { triggerToast } from "@/utils/toast";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 type music = {
@@ -99,12 +99,26 @@ export default function playsong() {
     }
 
     async function handleClickDownload(id_konten: string, judul: string) {
-        if ((await isDownloaded(emailuser!, id_konten!)).rows[0]['exists']) {  
-            triggerToast('error', 'Music have been Downloaded!');
+        if ((await isDownloaded(emailuser!, id_konten!)).rows[0]['exists']) {
+            router.push(pathname + `/downloadsong` + `?` + createQueryString2(['id_konten', 'judul', 'hasil'], [id_konten, judul, 'gagal']));
         } else {
             handleAddDownloadedSong(emailuser!, id_konten!)
-            router.push(pathname + `/downloadsong` + `?` + createQueryString2(['id_konten', 'judul'], [id_konten, judul]));
+            router.push(pathname + `/downloadsong` + `?` + createQueryString2(['id_konten', 'judul', 'hasil'], [id_konten, judul, 'sukses']));
         }
+    }
+
+    async function handleClickPlay( id_konten:string, barplay:string ) {
+        const barplayInt = parseInt(barplay);
+        if (barplayInt >= 70) {
+            handleUpdateTotalPlaySong(id_konten)
+            console.log('Update Total Play')
+        } else {
+            console.log('Not Update')
+        }
+    }
+
+    function durasiToHourMinutes( durasi:number ){
+        return ((durasi-(durasi%60))/60) + ' Hour ' + (durasi%60) + ' Minutes';
     }
     
     if(isPremi) {
@@ -126,19 +140,19 @@ export default function playsong() {
                             <li key={index}>-   {row.nama}</li>
                         ))}
                     </ul>
-                    <p>Durasi: {dataMusic?.durasi}</p>
-                    <p>Tanggal Rilis: {dataMusic?.tanggal_rilis.toString()}</p>
+                    <p>Durasi: {durasiToHourMinutes(dataMusic?.durasi!)}</p>
+                    <p>Tanggal Rilis: {dataMusic?.tanggal_rilis.toString().split('T')[0]}</p>
                     <p>Tahun: {dataMusic?.tahun}</p>
                     <p>Total Play: {dataMusic?.total_play}</p>
                     <p>Total Downloads: {dataMusic?.total_download}</p>
                     <p>Album: {dataMusic?.judul_album}</p>
                 </div>
                 <input id="playbar" type="range" defaultValue={0} className="mx-96" />
-                <a href="#" className="text-center">[Play]</a>
+                <a onClick={() => {handleClickPlay(dataMusic!.id_konten, (document.getElementById("playbar") as HTMLInputElement).value)}} className="text-center">[Play]</a>
                 <a onClick={() => {handleClickSongtoPL(dataMusic!.id_konten)}} className="text-center">[Add to Playlist]</a>
                 <a onClick={ () => {handleClickDownload(dataMusic!.id_konten, dataMusic!.judul_music)}} className="text-center">[Download]</a>
                 <a onClick={ () => {
-                    router.replace('../kelolapl');
+                    router.back();
                 }} className="text-center">[Kembali]</a>
             </div>
         )
@@ -172,7 +186,7 @@ export default function playsong() {
                 <a href="#" className="text-center">[Play]</a>
                 <a onClick={() => {handleClickSongtoPL(dataMusic!.id_konten)}} className="text-center">[Add to Playlist]</a>
                 <a onClick={ () => {
-                    router.replace('../kelolapl');
+                    router.back();
                 }} className="text-center">[Kembali]</a>
             </div>
         )
