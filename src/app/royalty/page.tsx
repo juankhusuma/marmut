@@ -32,34 +32,31 @@ export default async function RoyaltyPage() {
 
   //ini harus dicek ulang kek aneh gitu soalnya
   else if (isSongwriter) {
-    result = await sql`SELECT
+    result = await sql`SELECT    
     k.judul AS judul_lagu,
     a.judul AS judul_album,
     s.total_play,
     s.total_download,
-    (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat
-    FROM
-    song s
-    JOIN konten k ON s.id_konten = k.id
-    JOIN album a ON s.id_album = a.id
-    JOIN royalti r ON r.id_song = s.id_konten
-    LEFT JOIN pemilik_hak_cipta phc ON phc.id = royalti.id_pemilik_hak_cipta
+    (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat 
+    from song s join album a on a.id = s.id_album
+    join konten k on s.id_konten = k.id
+    join songwriter_write_song sws on sws.id_song = s.id_konten
+    join songwriter so on so.id = sws.id_songwriter
+    LEFT JOIN pemilik_hak_cipta phc ON so.id_pemilik_hak_cipta = phc.id
     WHERE so.email_akun = ${user?.email}
     `;
   }
 
   else if (isLabel) {
-    result = await sql`SELECT
+    result = await sql`SELECT     
     k.judul AS judul_lagu,
     a.judul AS judul_album,
     s.total_play,
     s.total_download,
     (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat
-    FROM
-    song s
-    JOIN konten k ON s.id_konten = k.id
-    JOIN album a ON s.id_album = a.id
-    JOIN label la ON s.id_artist = la.id
+    from song s join album a on a.id = s.id_album
+    join konten k on s.id_konten = k.id
+    join label la on la.id = a.id_label
     LEFT JOIN pemilik_hak_cipta phc ON la.id_pemilik_hak_cipta = phc.id
     WHERE la.email = ${user?.email}
     `;
