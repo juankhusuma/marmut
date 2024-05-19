@@ -30,7 +30,6 @@ export default async function RoyaltyPage() {
     `;
   }
 
-  //ini harus dicek ulang kek aneh gitu soalnya
   else if (isSongwriter) {
     result = await sql`SELECT    
     k.judul AS judul_lagu,
@@ -97,7 +96,7 @@ export default async function RoyaltyPage() {
                 <td>{row.judul_album}</td>
                 <td className="text-center">{row.total_play}</td>
                 <td className="text-center">{row.total_download}</td>
-                <td>{f.format(row.Total_Royalti_Didapat)}</td>
+                <td>{isNaN(row.Total_Royalti_Didapat) ? 'Rp0' : f.format(row.Total_Royalti_Didapat)}</td>
               </tr>
             ))}
           </tbody>
