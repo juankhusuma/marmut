@@ -18,7 +18,7 @@ export async function handleUserPL(email: string | null) {
     return data;
 }
 
-export async function handlePlaylistDTL( id_user_playlist: string | null) {
+export async function handlePlaylistDTL(id_user_playlist: string | null) {
     const data = await sql`
     SELECT U.judul, AKUN.nama AS nama_pembuat, U.jumlah_lagu, U.total_durasi, U.tanggal_dibuat, U.deskripsi
     FROM USER_PLAYLIST AS U
@@ -28,7 +28,7 @@ export async function handlePlaylistDTL( id_user_playlist: string | null) {
     return data;
 }
 
-export async function handleSongPlaylist( id_playlist: string | null) {
+export async function handleSongPlaylist(id_playlist: string | null) {
     const data = await sql`
     SELECT KONTEN.judul, AKUN.nama, KONTEN.durasi, SONG.id_konten
     FROM SONG
@@ -54,7 +54,7 @@ export async function handleListSong() {
     return data;
 }
 
-export async function handlePlaylistchange( id_user_playlist: string | null) {
+export async function handlePlaylistchange(id_user_playlist: string | null) {
     const data = await sql`
     SELECT id_user_playlist, judul, deskripsi
     FROM USER_PLAYLIST
@@ -63,7 +63,7 @@ export async function handlePlaylistchange( id_user_playlist: string | null) {
     return data;
 }
 
-export async function handleSongDetails( id_konten: string | null) {
+export async function handleSongDetails(id_konten: string | null) {
     const data = await sql`
     SELECT 
         KONTEN.judul AS judul_music,
@@ -75,42 +75,21 @@ export async function handleSongDetails( id_konten: string | null) {
         SONG.total_download AS total_download, 
         ALBUM.judul AS judul_album,
         SONG.id_konten AS id_konten
-    FROM
-        SONG
-    INNER JOIN 
-        KONTEN ON SONG.id_konten = KONTEN.id
-    INNER JOIN 
-        ARTIST ON SONG.id_artist = ARTIST.id
-    INNER JOIN 
-        AKUN ON ARTIST.email_akun = AKUN.email
-    INNER JOIN 
-        ALBUM ON SONG.id_album = ALBUM.id
-    INNER JOIN 
-        GENRE ON KONTEN.id = GENRE.id_konten
-    INNER JOIN 
-        SONGWRITER_WRITE_SONG ON SONG.id_konten = SONGWRITER_WRITE_SONG.id_song
-    INNER JOIN 
-        SONGWRITER ON SONGWRITER_WRITE_SONG.id_songwriter = SONGWRITER.id
-    INNER JOIN 
-        AKUN AS AKUN_WRITER ON SONGWRITER.email_akun = AKUN_WRITER.email
-    WHERE 
-        SONG.id_konten = ${id_konten}
-    GROUP BY 
-        SONG.id_konten, KONTEN.judul, AKUN.nama, KONTEN.durasi, KONTEN.tanggal_rilis, KONTEN.tahun, ALBUM.judul
+    FROM SONG
+    JOIN KONTEN ON SONG.id_konten = KONTEN.id
+    JOIN ARTIST ON SONG.id_artist = ARTIST.id
+    JOIN AKUN ON ARTIST.email_akun = AKUN.email
+    JOIN ALBUM ON SONG.id_album = ALBUM.id
+    WHERE SONG.id_konten = ${id_konten}
     `;
     return data;
 }
 
 export async function handleSongGenre(id_konten: string | null) {
     const data = await sql`
-    SELECT
-        GENRE.genre
-    FROM 
-        SONG
-    INNER JOIN
-        GENRE ON SONG.id_konten = GENRE.id_konten
-    WHERE 
-        SONG.id_konten = ${id_konten}
+    SELECT genre
+    FROM genre
+    WHERE id_konten = ${id_konten}
     `;
     return data;
 }
@@ -171,7 +150,7 @@ export async function handleChangePlaylist(formData: FormData) {
     `;
 }
 
-export async function handleUpdateTotalPlaySong( id_konten: string ) {
+export async function handleUpdateTotalPlaySong(id_konten: string) {
     await sql`
     UPDATE SONG
     SET total_play = total_play + 1
@@ -181,7 +160,7 @@ export async function handleUpdateTotalPlaySong( id_konten: string ) {
 
 // Insert Section
 
-export async function   handleAddSong(formData: FormData) {
+export async function handleAddSong(formData: FormData) {
     const id_konten = formData.get("song")! as string;
     var id_playlist;
     var id_user_playlist;
@@ -205,7 +184,7 @@ export async function   handleAddSong(formData: FormData) {
         console.log('addsongfailed');
         submit = "error";
     }
-    redirect('/playlist/kelolapl/playlistdetail?id_user_playlist='+ id_user_playlist +'&id_playlist=' + id_playlist + '&submit=' + submit)
+    redirect('/playlist/kelolapl/playlistdetail?id_user_playlist=' + id_user_playlist + '&id_playlist=' + id_playlist + '&submit=' + submit)
 
 }
 
@@ -230,13 +209,13 @@ export async function handleAddPlaylist(formData: FormData) {
     console.log('Add Playlist Success')
 }
 
-export async function handleAddDownloadedSong(email: string, id_song: string) { 
+export async function handleAddDownloadedSong(email: string, id_song: string) {
     await sql`
     INSERT INTO DOWNLOADED_SONG (id_song, email_downloader) VALUES (${id_song}, ${email})
     `;
 }
 
-export async function handleEntryAkunPlayPlaylist( email:string, id_user_playlist:string) {
+export async function handleEntryAkunPlayPlaylist(email: string, id_user_playlist: string) {
     const email_pembuat = await sql`
     SELECT email_pembuat FROM user_playlist
     WHERE id_user_playlist = ${id_user_playlist}
