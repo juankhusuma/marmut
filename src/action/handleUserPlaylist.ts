@@ -85,18 +85,8 @@ export async function handleSongDetails( id_konten: string | null) {
         AKUN ON ARTIST.email_akun = AKUN.email
     INNER JOIN 
         ALBUM ON SONG.id_album = ALBUM.id
-    INNER JOIN 
-        GENRE ON KONTEN.id = GENRE.id_konten
-    INNER JOIN 
-        SONGWRITER_WRITE_SONG ON SONG.id_konten = SONGWRITER_WRITE_SONG.id_song
-    INNER JOIN 
-        SONGWRITER ON SONGWRITER_WRITE_SONG.id_songwriter = SONGWRITER.id
-    INNER JOIN 
-        AKUN AS AKUN_WRITER ON SONGWRITER.email_akun = AKUN_WRITER.email
     WHERE 
         SONG.id_konten = ${id_konten}
-    GROUP BY 
-        SONG.id_konten, KONTEN.judul, AKUN.nama, KONTEN.durasi, KONTEN.tanggal_rilis, KONTEN.tahun, ALBUM.judul
     `;
     return data;
 }
