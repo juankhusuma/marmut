@@ -1,10 +1,8 @@
 "use server"
 
 import Link from 'next/link';
-
-
-
 import { sql } from "@vercel/postgres";
+import { handleDeleteSong } from "@/action/handleDeleteSong";
 
 export default async function AlbumUserDetails({ params }: { params: {id: string}}) {
 
@@ -13,7 +11,7 @@ export default async function AlbumUserDetails({ params }: { params: {id: string
   const tampilan = await sql `SELECT judul from album where album.id = ${params.id}`
   const p = tampilan.rows[0]?.judul;
 
-  const result = await sql `SELECT k.judul, k.durasi, s.total_play, s.total_download
+  const result = await sql `SELECT s.id_konten, k.judul, k.durasi, s.total_play, s.total_download
   FROM song s JOIN album a ON a.id = s.id_album JOIN konten k on s.id_konten = k.id
   WHERE a.id = ${params.id}
   `;
@@ -55,12 +53,15 @@ export default async function AlbumUserDetails({ params }: { params: {id: string
                                     <td className="px-6 py-4 whitespace-nowrap">{song.total_play}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{song.total_download}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Link href={`/album-song/user/albumdetails/songdetails/${song.id}`}>
+                                        <Link href={`/playlist/playsong?id_konten=${song.id_konten}`}>
                                             <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
                                                 Lihat Details
                                             </button>
                                         </Link>
-                                        <a href="#" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</a>
+                                        <form action={handleDeleteSong} method="POST" className="inline">
+                                            <input type="hidden" name="id" value={song.id_konten} />
+                                            <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                             ))}
@@ -70,5 +71,5 @@ export default async function AlbumUserDetails({ params }: { params: {id: string
             </div>
         </div>
     </div>
-);
+  );
 }

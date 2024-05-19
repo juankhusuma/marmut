@@ -26,6 +26,11 @@ export default async function CreateSong({ params }: { params: {albumId: string}
     const isArtist = user?.roles.includes("ARTIST");
     const isSongwriter = user?.roles.includes("SONGWRITER");
 
+    console.log(songwriter);
+    console.log(isArtist);
+    console.log(isSongwriter);
+    console.log(user);
+
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
