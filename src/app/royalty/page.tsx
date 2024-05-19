@@ -30,6 +30,7 @@ export default async function RoyaltyPage() {
     `;
   }
 
+  //ini harus dicek ulang kek aneh gitu soalnya
   else if (isSongwriter) {
     result = await sql`SELECT
     k.judul AS judul_lagu,
