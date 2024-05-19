@@ -63,13 +63,13 @@ export default async function AlbumListLabel() {
                     <td className="px-6 py-4 whitespace-nowrap">{album.judul}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{album.jumlah_lagu}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{album.total_durasi}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-y-2"> {/* Changed text-right to text-center and added space-y-2 */}
                       <Link href={`/album-song/user/${album.id}`}>
                         <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
                           Lihat Daftar Lagu
                         </button>
                       </Link>
-                      <form action={handleDeleteAlbum}>
+                      <form action={handleDeleteAlbum} method="POST" className="inline">
                         <input type="hidden" name="id" value={album.id} />
                         <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                           Hapus
