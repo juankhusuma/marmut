@@ -65,8 +65,13 @@ async function Dashboard() {
   )
 }
 
-function Playlist() {
-  const isNotNone = false;
+async function Playlist() {
+  const user = await checkUser();
+  const playlist = (await sql`
+  SELECT * FROM USER_PLAYLIST
+  WHERE email_pembuat = ${user!.email}
+  `).rows;
+  const isNotNone = playlist.length > 0;
   return (
     isNotNone ? (<div className="flex w-full flex-col items-center">
       <h1>Playlist Pengguna</h1>
@@ -78,18 +83,12 @@ function Playlist() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Playlist 1</td>
-            <td><Link href="#">[Lihat]</Link></td>
-          </tr>
-          <tr>
-            <td>Playlist 2</td>
-            <td><Link href="#">[Lihat]</Link></td>
-          </tr>
-          <tr>
-            <td>Playlist 2</td>
-            <td><Link href="#">[Lihat]</Link></td>
-          </tr>
+          {playlist.map((playlist:any) => (
+            <tr>
+              <td>{playlist.judul}</td>
+              <td><Link href={`/playlist/playup?id_playlist=${playlist.id_playlist}&id_user_playlist=${playlist.id_user_playlist}`}>[Lihat]</Link></td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>) : (

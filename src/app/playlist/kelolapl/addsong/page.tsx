@@ -1,30 +1,82 @@
 'use client';
 
-export default function addsongtopl() {
-    return (
-        <div className="container mx-auto p-4">
-            <div className="flex flex-col items-center">
-                <h1 className="text-2xl font-bold mb-4">Tambah Lagu</h1>
-                <div className="relative mb-4">
-                <button className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
-                    <span>Pilih Lagu</span>
-                    <svg className="fill-current w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M5.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615l-4.415 4.242c-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335l-4.413-4.242c-0.41-0.418-0.436-1.17 0-1.615z"/>
-                    </svg>
-                </button>
-                <ul className="absolute text-gray-700 pt-1">
-                    <li className=""><a className="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Song1 - Artist1</a></li>
-                    <li className=""><a className="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Song2 - Artist2</a></li>
-                    <li className=""><a className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Song3 - Artist3</a></li>
-                </ul>
-                </div>
-            </div>
+import { handleAddSong, handleListSong } from "@/action/handleUserPlaylist";
+import { triggerToast } from "@/utils/toast";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 
-            <div className="flex justify-center mt-48">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Submit
-                </button>
+type song = {
+    id_konten: string
+    judul: string
+    nama: string
+}
+
+export default function addsongtopl() {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const [dataMusic, setDataMusic] = useState<Array<song>>();
+    const [value, setValue] = useState<string>("b");
+
+    const id_playlist = searchParams.get('id_playlist');
+    const id_user_playlist = searchParams.get('id_user_playlist');
+
+    useEffect(() => {
+        handleListSong().then(res => {
+            if (res.rowCount != 0){
+                let allRows = [];
+                for (let i = 0; i < res.rowCount; i++) {
+                    allRows.push(JSON.parse(JSON.stringify(res.rows.at(i))));
+                }
+                setDataMusic(allRows);
+            }
+        });
+    }, [])
+
+    const createQueryString = useCallback(
+        (name: string, value: string) => {
+          const params = new URLSearchParams()
+          params.set(name, value)
+     
+          return params.toString()
+        },
+        [searchParams]
+    )
+
+    const createQueryString2 = useCallback(
+        (name: Array<string>, value: Array<string>) => {
+          const params = new URLSearchParams()
+          params.set(name[0], value[0])
+          for (let index = 1; index < name.length; index++) {
+            params.append(name[index], value[index])
+          }
+     
+          return params.toString()
+        },
+        [searchParams]
+    )
+    
+    return (
+        <form className="flex flex-col space-y-2 justify-items-center items-center" action={handleAddSong}>
+            <div className="flex flex-col justify-items-center items-center">
+                <label htmlFor="song" className="block mb-2 text-3xl font-bold text-gray-900 dark:text-white">Tambah Lagu</label>
+                <select id="song" name="song" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-6/12 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="" disabled selected>Choose a song</option>
+                    {dataMusic?.map((row, index) => (
+                        <option key={index} value={row.id_konten}>{row.judul} - {row.nama}</option>
+                    ))}
+                </select>
             </div>
-        </div>
+            <button className="btn btn-primary" type="submit">Submit</button>
+            <div className="invisible">
+                <label htmlFor="id_playlist"></label>
+                <input name="id_playlist" id="id_playlist" type="text" value={id_playlist!}></input>
+            </div>
+            <div className="invisible">
+                <label htmlFor="id_user_playlist"></label>
+                <input name="id_user_playlist" id="id_user_playlist" type="text" value={id_user_playlist!}></input>
+            </div>
+        </form>
     )
 }
