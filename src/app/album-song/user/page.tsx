@@ -104,6 +104,7 @@ export default async function AlbumListUser() {
                   </tr>
                 ))}
               </tbody>
+              
             </table>
           </div>
         </div>
