@@ -2,13 +2,10 @@
 
 import Link from 'next/link';
 import { sql } from "@vercel/postgres";
-import { unstable_noStore as noStore } from 'next/cache';
 import { handleDeleteAlbum } from "@/action/handleDeleteAlbum";
 import { checkUser } from "@/action/checkUser";
 
 export default async function AlbumListUser() {
-  noStore();
-
   const user = await checkUser();
   const isLabel = user?.roles.includes("LABEL");
   const isArtist = user?.roles.includes("ARTIST");
@@ -25,9 +22,9 @@ export default async function AlbumListUser() {
     );
   }
 
-  let albums : any;
+  let albums: any;
 
-  if (isArtist){
+  if (isArtist) {
     const result = await sql`
     SELECT al.id, al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join artist a on s.id_artist = a.id
     join album al on al.id = s.id_album join label la on la.id = al.id_label
@@ -37,7 +34,7 @@ export default async function AlbumListUser() {
     albums = result.rows;
   }
 
-  if(isSongwriter){
+  if (isSongwriter) {
     const result = await sql`
     SELECT al.id, al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join songwriter_write_song sow on sow.id_song = s.id_konten
     join songwriter so on sow.id_songwriter = so.id
@@ -77,7 +74,7 @@ export default async function AlbumListUser() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200 text-center">
-                {albums?.map((album : any) => (
+                {albums?.map((album: any) => (
                   <tr key={album.id}>
                     <td className="px-6 py-4 whitespace-nowrap">{album.judul}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{album.nama}</td>
