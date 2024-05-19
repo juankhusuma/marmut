@@ -34,6 +34,5 @@ export async function handleUserLogin(formData: FormData) {
         name: "email",
         value: email,
     })
-
     redirect("/")
 }

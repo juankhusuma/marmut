@@ -31,35 +31,31 @@ export default async function RoyaltyPage() {
   }
 
   else if (isSongwriter) {
-    result = await sql`SELECT
+    result = await sql`SELECT    
     k.judul AS judul_lagu,
     a.judul AS judul_album,
     s.total_play,
     s.total_download,
-    (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat
-    FROM
-    song s
-    JOIN konten k ON s.id_konten = k.id
-    JOIN album a ON s.id_album = a.id
-    JOIN songwriter so ON s.id_artist = so.id
-    JOIN label la on la.id = al.id_label
+    (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat 
+    from song s join album a on a.id = s.id_album
+    join konten k on s.id_konten = k.id
+    join songwriter_write_song sws on sws.id_song = s.id_konten
+    join songwriter so on so.id = sws.id_songwriter
     LEFT JOIN pemilik_hak_cipta phc ON so.id_pemilik_hak_cipta = phc.id
     WHERE so.email_akun = ${user?.email}
     `;
   }
 
   else if (isLabel) {
-    result = await sql`SELECT
+    result = await sql`SELECT     
     k.judul AS judul_lagu,
     a.judul AS judul_album,
     s.total_play,
     s.total_download,
     (CAST(s.total_play AS BIGINT) * CAST(phc.rate_royalti AS BIGINT)) AS Total_Royalti_Didapat
-    FROM
-    song s
-    JOIN konten k ON s.id_konten = k.id
-    JOIN album a ON s.id_album = a.id
-    JOIN label la ON s.id_artist = la.id
+    from song s join album a on a.id = s.id_album
+    join konten k on s.id_konten = k.id
+    join label la on la.id = a.id_label
     LEFT JOIN pemilik_hak_cipta phc ON la.id_pemilik_hak_cipta = phc.id
     WHERE la.email = ${user?.email}
     `;
@@ -100,7 +96,7 @@ export default async function RoyaltyPage() {
                 <td>{row.judul_album}</td>
                 <td className="text-center">{row.total_play}</td>
                 <td className="text-center">{row.total_download}</td>
-                <td>{f.format(row.Total_Royalti_Didapat)}</td>
+                <td>{isNaN(row.Total_Royalti_Didapat) ? 'Rp0' : f.format(row.Total_Royalti_Didapat)}</td>
               </tr>
             ))}
           </tbody>

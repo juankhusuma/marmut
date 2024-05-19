@@ -83,7 +83,7 @@ async function Playlist() {
           </tr>
         </thead>
         <tbody>
-          {playlist.map((playlist:any) => (
+          {playlist.map((playlist: any) => (
             <tr>
               <td>{playlist.judul}</td>
               <td><Link href={`/playlist/playup?id_playlist=${playlist.id_playlist}&id_user_playlist=${playlist.id_user_playlist}`}>[Lihat]</Link></td>
@@ -97,35 +97,64 @@ async function Playlist() {
   )
 }
 
-function Songs() {
-  const isNotNone = false;
-  return (isNotNone ? (<div className="flex w-full flex-col items-center">
-    <h1>Lagu Pengguna</h1>
-    <table className="table">
-      <thead>
-        <tr>
-          <td>Judul</td>
-          <td>Actions</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Lagu 1</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-        <tr>
-          <td>Lagu 2</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-        <tr>
-          <td>Lagu 2</td>
-          <td><Link href="#">[Lihat]</Link></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>) : (
-    <p>Lagu: "Belum Memiliki Lagu".</p>
-  ))
+async function Songs() {
+  const user = await checkUser();
+  const isArtist = user?.roles.includes("ARTIST");
+  let isNotNone = false;
+  let songs: any = [];
+  if (isArtist) {
+    const result1 = await sql`
+      SELECT
+        k.judul AS judul_lagu
+      FROM
+      song s
+      join konten k on s.id_konten = k.id
+      JOIN artist ar ON s.id_artist = ar.id
+      WHERE ar.email_akun = ${user!.email}`;
+
+    songs = result1.rows;
+    isNotNone = songs.length > 0;
+  }
+  else {
+    const result1 = await sql`
+    SELECT
+      k.judul AS judul_lagu, k.id
+    FROM
+      song s
+    join konten k on s.id_konten = k.id
+    join songwriter_write_song sws on sws.id_song = s.id_konten
+    join songwriter so on so.id = sws.id_songwriter
+    WHERE so.email_akun = ${user!.email}`;
+
+    songs = result1.rows;
+    isNotNone = songs.length > 0;
+  }
+
+  return (
+    isNotNone ? (
+      <div className="flex w-full flex-col items-center">
+        <h1>Lagu Pengguna</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <td>Judul</td>
+              <td>Actions</td>
+            </tr>
+          </thead>
+          <tbody>
+            {songs.map((song: any, index: any) => (
+              <tr key={index}>
+                <td>{song.judul_lagu}</td>
+                <td><Link href={`/playlist/playsong?id_konten=${song.id}`}>[Lihat]</Link></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p>Lagu: "Belum Memiliki Lagu".</p>
+    )
+  );
 }
 
 async function Podcast() {

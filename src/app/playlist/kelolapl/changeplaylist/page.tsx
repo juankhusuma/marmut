@@ -5,8 +5,6 @@ import { triggerToast } from "@/utils/toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { handleChangePlaylist, handlePlaylistchange } from "@/action/handleUserPlaylist";
 
-const myState = history.state;
-
 type user_playlist = {
     id_user_playlist: string
     judul: string
@@ -21,7 +19,7 @@ export default function changeplaylist() {
 
     useEffect(() => {
         handlePlaylistchange(id_user_playlist).then(res => {
-            if (res.rowCount != 0){
+            if (res.rowCount != 0) {
                 setDatapl(JSON.parse(JSON.stringify(res.rows[0])));
             }
         });
@@ -47,11 +45,11 @@ export default function changeplaylist() {
                 <h1 className="text-3xl font-bold text-center">Ubah Playlist</h1>
                 <div className="flex flex-col">
                     <label htmlFor="email" className="label-text">Judul</label>
-                    <input className="input-sm input-primary mb-2" type="text" name="judul" defaultValue={datapl?.judul}/>
+                    <input className="input-sm input-primary mb-2" type="text" name="judul" defaultValue={datapl?.judul} />
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="email" className="label-text">Deskripsi</label>
-                    <input className="input-sm input-primary mb-2" type="text" name="deskripsi" defaultValue ={datapl?.deskripsi}/>
+                    <input className="input-sm input-primary mb-2" type="text" name="deskripsi" defaultValue={datapl?.deskripsi} />
                 </div>
                 <button className="btn btn-primary" type="submit">Submit</button>
             </form>
