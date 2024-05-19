@@ -1,5 +1,10 @@
 # Marmut - E 17 BASDAT
 
+Code of conduct:
+Kami menyatakan bahwa Tugas Kelompok ini kami kerjakan dengan usaha kami sendiri. 
+Kami tidak menyalin jawaban dari sumber manapun. 
+Kami bertanggung jawab menjaga agar jawaban Tugas Kelompok kami tidak disalin oleh peserta kelompok lainnya. 
+
 Cara run:
 1. Install node
 2. Buat file .env dengan isi sbb:
