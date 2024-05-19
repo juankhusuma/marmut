@@ -3,8 +3,10 @@
 import { handleUserCreateAlbum } from "@/action/handleUserCreateAlbum";
 import { sql } from "@vercel/postgres";
 import { checkUser } from "@/action/checkUser";
+import { unstable_noStore as noStorage } from "next/cache";
 
 export default async function UserCreateAlbumPage() {
+    noStorage();
     const result = await sql`SELECT a.id, a.email_akun, ak.nama FROM artist AS a JOIN akun ak ON a.email_akun = ak.email`;
     const artist = result.rows;
 
@@ -93,12 +95,12 @@ export default async function UserCreateAlbumPage() {
                     </div>
                     <div className="mb-4">
                         <label htmlFor="genre" className="block text-sm font-medium text-gray-700">Genre:</label>
-                        {genre.map(g =>(
+                        {genre.map(g => (
                             <div>
                                 <label>
                                     {g.genre as any}
                                 </label>
-                                <input type="checkbox" name = "genre" value = {g.genre}/>
+                                <input type="checkbox" name="genre" value={g.genre} />
                             </div>
                         ))}
                     </div>
