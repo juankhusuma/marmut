@@ -6,7 +6,6 @@ import { handleDeleteAlbum } from "@/action/handleDeleteAlbum";
 import { checkUser } from "@/action/checkUser";
 
 export default async function AlbumListLabel() {
-
   const user = await checkUser();
   const isArtist = user?.roles.includes("ARTIST");
   const isSongwriter = user?.roles.includes("SONGWRITER");
@@ -28,7 +27,7 @@ export default async function AlbumListLabel() {
     JOIN label la ON a.id_label = la.id
     WHERE la.email = ${user?.email}
   `;
-  const album = result.rows;
+  const albums = result.rows;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -38,46 +37,42 @@ export default async function AlbumListLabel() {
             <h3 className="text-lg leading-6 font-medium text-gray-900 text-center">LIST ALBUM</h3>
           </div>
           <div className="border-t border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-deep-blue">
-                <tr>
-                  <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Judul
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Jumlah Lagu
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Total Durasi
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200 text-center">
-                {album.map((album) => (
-                  <tr key={album.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">{album.judul}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{album.jumlah_lagu}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{album.total_durasi}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-y-2"> {/* Changed text-right to text-center and added space-y-2 */}
-                      <Link href={`/album-song/user/${album.id}`}>
-                        <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
-                          Lihat Daftar Lagu
-                        </button>
-                      </Link>
-                      <form action={handleDeleteAlbum} method="POST" className="inline">
-                        <input type="hidden" name="id" value={album.id} />
-                        <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
-                          Hapus
-                        </button>
-                      </form>
-                    </td>
+            {albums.length === 0 ? (
+              <div className="p-4 text-center text-gray-500">You don't have any albums yet</div>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-deep-blue">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Judul</th>
+                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Jumlah Lagu</th>
+                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Total Durasi</th>
+                    <th scope="col" className="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200 text-center">
+                  {albums.map((album) => (
+                    <tr key={album.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">{album.judul}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{album.jumlah_lagu}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{album.total_durasi}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-y-2">
+                        <Link href={`/album-song/label/${album.id}`}>
+                          <button className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mr-2">
+                            Lihat Daftar Lagu
+                          </button>
+                        </Link>
+                        <form action={handleDeleteAlbum} method="POST" className="inline">
+                          <input type="hidden" name="id" value={album.id} />
+                          <button type="submit" className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                            Hapus
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
