@@ -29,21 +29,21 @@ export default async function AlbumListUser() {
 
   if (isArtist){
     const result = await sql`
-    SELECT al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join artist a on s.id_artist = a.id
+    SELECT al.id, al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join artist a on s.id_artist = a.id
     join album al on al.id = s.id_album join label la on la.id = al.id_label
     WHERE a.email_akun = ${user?.email}
-    group by (al.judul, la.nama, al.jumlah_lagu, al.total_durasi)
+    group by (al,id al.judul, la.nama, al.jumlah_lagu, al.total_durasi)
     `;
     albums = result.rows;
   }
 
   if(isSongwriter){
     const result = await sql`
-    SELECT al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join songwriter_write_song sow on sow.id_song = s.id_konten
+    SELECT al.id, al.judul, la.nama, al.jumlah_lagu, al.total_durasi from song s join songwriter_write_song sow on sow.id_song = s.id_konten
     join songwriter so on sow.id_songwriter = so.id
     join album al on al.id = s.id_album join label la on la.id = al.id_label
     WHERE so.email_akun = ${user?.email}
-    group by (al.judul, la.nama, al.jumlah_lagu, al.total_durasi)
+    group by (al.id, al.judul, la.nama, al.jumlah_lagu, al.total_durasi)
     `;
     albums = result.rows;
   }
