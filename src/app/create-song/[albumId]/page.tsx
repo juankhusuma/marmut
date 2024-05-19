@@ -3,9 +3,10 @@
 import { handleUserCreateSong } from "@/action/handleUserCreateSong";
 import { sql } from "@vercel/postgres";
 import { checkUser } from "@/action/checkUser";
+import { unstable_noStore as noStorage } from "next/cache";
 
 export default async function CreateSong({ params }: { params: { albumId: string } }) {
-
+    noStorage();
     params.albumId = decodeURIComponent(params.albumId);
 
     const result = await sql`SELECT a.id, a.email_akun, ak.nama FROM artist AS a JOIN akun ak ON a.email_akun = ak.email`;
